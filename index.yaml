@@ -1,5 +1,28 @@
 apiVersion: v1
 entries:
+  helm-project-operator:
+  - annotations:
+      catalog.cattle.io/certified: rancher
+      catalog.cattle.io/display-name: Helm Project Operator
+      catalog.cattle.io/kube-version: '>=1.16.0-0'
+      catalog.cattle.io/namespace: cattle-helm-system
+      catalog.cattle.io/os: linux,windows
+      catalog.cattle.io/permits-os: linux,windows
+      catalog.cattle.io/provides-gvr: helm.cattle.io.projecthelmchart/v1alpha1
+      catalog.cattle.io/rancher-version: '>= 2.6.0-0'
+      catalog.cattle.io/release-name: helm-project-operator
+    apiVersion: v2
+    appVersion: v0.4.3
+    created: "2025-01-06T19:07:03.978552-05:00"
+    description: Helm Project Operator
+    digest: 2867207defde96aebfe11c1dbede74e72bf4ca29d049853b178e8e6cb4d41575
+    maintainers:
+    - email: dan.pock@suse.com
+      name: Dan Pock
+    name: helm-project-operator
+    urls:
+    - assets/helm-project-operator/helm-project-operator-0.3.2.tgz
+    version: 0.3.2
   prometheus-federator:
   - annotations:
       catalog.cattle.io/certified: rancher
