@@ -3,6 +3,4 @@ set -e
 
 cd $(dirname $0)
 
-./build
-./test
-./package
+echo "TODO add default action"
