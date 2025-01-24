@@ -4,8 +4,11 @@ commit: f0e1cb7c070f556146c2833dbd132f7a321ffa45
 version: 40.1.2-rancher.1
 additionalCharts:
   - workingDir: charts-crd
+    upstreamOptions:
+      url: https://github.com/prometheus-community/helm-charts.git
+      commit: f0e1cb7c070f556146c2833dbd132f7a321ffa45
+      subdirectory: charts/kube-prometheus-stack/crds
     crdOptions:
-      templateDirectory: crd-template
-      crdDirectory: crd-manifest
       addCRDValidationToMainChart: true
+      templateDirectory: crd-template
       useTarArchive: true
