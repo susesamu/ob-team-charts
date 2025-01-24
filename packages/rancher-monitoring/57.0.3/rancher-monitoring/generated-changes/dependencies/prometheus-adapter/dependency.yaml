@@ -1,2 +1,2 @@
 workingDir: ""
-url: packages/rancher-monitoring/rancher-prometheus-adapter
+url: packages/rancher-monitoring/57.0.3/rancher-prometheus-adapter
