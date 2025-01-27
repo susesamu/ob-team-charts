@@ -1134,7 +1134,6 @@ grafana:
 ## Deploy a Prometheus instance
 ##
 prometheus:
-
   enabled: true
 
   ## Annotations for Prometheus
