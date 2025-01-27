@@ -89,3 +89,18 @@
  {{- define "kube-prometheus-stack.operator.admission-webhook.dnsNames" }}
  {{- $fullname := include "kube-prometheus-stack.operator.fullname" . }}
  {{- $namespace := include "kube-prometheus-stack.namespace" . }}
+@@ -456,12 +455,4 @@
+ {{ $fullname }}-webhook
+ {{ $fullname }}-webhook.{{ $namespace }}.svc
+ {{- end }}
+-{{- end }}
+-
+-{{- define "rke2-ingress-nginx.namespace" -}}
+-  {{- if .Values.rke2IngressNginx.namespaceOverride -}}
+-    {{- .Values.rke2IngressNginx.namespaceOverride -}}
+-  {{- else -}}
+-    {{- print "kube-system" -}}
+-  {{- end -}}
+-{{- end }}
++{{- end }}
+\ No newline at end of file
