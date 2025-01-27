@@ -1,6 +1,6 @@
 --- charts-original/values.yaml
 +++ charts/values.yaml
-@@ -2,566 +2,7 @@
+@@ -2,568 +2,7 @@
  # This is a YAML-formatted file.
  # Declare variables to be passed into your templates.
  
@@ -336,6 +336,8 @@
 -
 -rke2IngressNginx:
 -  enabled: false
+-  networkPolicy:
+-    enabled: false
 -  metricsPort: 10254
 -  component: ingress-nginx
 -  # in the RKE2 cluster, the ingress-nginx-controller is deployed
@@ -562,13 +564,13 @@
 -  ## Image to use to run the scripts
 -  image:
 -    repository: rancher/shell
--    tag: v0.2.1-rc.5
+-    tag: v0.2.1
 -
 +# Rancher Project Monitoring Configuration
  ## Rancher Monitoring
  ##
  
-@@ -580,59 +21,17 @@
+@@ -582,59 +21,17 @@
    ##
    selector: {}
  
@@ -631,7 +633,7 @@
  ##
  kubeTargetVersionOverride: ""
  
-@@ -650,66 +49,24 @@
+@@ -652,66 +49,24 @@
  # scmhash: abc123
  # myLabel: aakkmd
  
@@ -700,7 +702,7 @@
    ## Labels for default rules
    labels: {}
    ## Annotations for default rules
-@@ -755,7 +112,7 @@
+@@ -757,7 +112,7 @@
      nodeExporterRecording: {}
      prometheus: {}
      prometheusOperator: {}
@@ -709,7 +711,7 @@
    ## Additional annotations for specific PrometheusRule alerts groups
    additionalRuleGroupAnnotations:
      alertmanager: {}
-@@ -791,58 +148,38 @@
+@@ -793,58 +148,38 @@
      prometheus: {}
      prometheusOperator: {}
  
@@ -784,7 +786,7 @@
    rbac:
      ## Create RBAC resources for ServiceAccounts and users
      ##
-@@ -850,6 +187,18 @@
+@@ -852,6 +187,18 @@
  
      userRoles:
        ## Create default user ClusterRoles to allow users to interact with Prometheus CRs, ConfigMaps, and Secrets
@@ -803,7 +805,7 @@
        create: true
        ## Aggregate default user ClusterRoles into default k8s ClusterRoles
        aggregateToDefaultRoles: true
-@@ -864,10 +213,6 @@
+@@ -866,10 +213,6 @@
        # seccomp.security.alpha.kubernetes.io/defaultProfileName: 'docker/default'
        # apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
  
@@ -814,7 +816,7 @@
    ## Reference to one or more secrets to be used when pulling images
    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
    ##
-@@ -880,29 +225,18 @@
+@@ -882,29 +225,18 @@
    ## Deploys the windows-exporter and Windows-specific dashboards and rules (job name must be 'windows-exporter')
    enabled: false
  
@@ -854,7 +856,7 @@
  
  ## Configuration for alertmanager
  ## ref: https://prometheus.io/docs/alerting/alertmanager/
-@@ -979,19 +313,12 @@
+@@ -981,19 +313,12 @@
        routes:
        - receiver: 'null'
          matchers:
@@ -875,7 +877,7 @@
    ## Pass the Alertmanager configuration directives through Helm's templating
    ## engine. If the Alertmanager configuration contains Alertmanager templates,
    ## they'll need to be properly escaped so that they are not interpreted by
-@@ -1126,53 +453,6 @@
+@@ -1128,53 +453,6 @@
    secret:
      annotations: {}
  
@@ -929,7 +931,7 @@
    ## Configuration for Alertmanager service
    ##
    service:
-@@ -1212,86 +492,17 @@
+@@ -1214,86 +492,17 @@
      ##
      externalTrafficPolicy: Cluster
  
@@ -1018,7 +1020,7 @@
  
      ## proxyUrl: URL of a proxy that should be used for scraping.
      ##
-@@ -1300,10 +511,6 @@
+@@ -1302,10 +511,6 @@
      ## scheme: HTTP scheme to use for scraping. Can be used with `tlsConfig` for example if using istio mTLS.
      scheme: ""
  
@@ -1029,7 +1031,7 @@
      ## tlsConfig: TLS configuration to use when scraping the endpoint. For example if using istio mTLS.
      ## Of type: https://github.com/coreos/prometheus-operator/blob/main/Documentation/api.md#tlsconfig
      tlsConfig: {}
-@@ -1329,12 +536,6 @@
+@@ -1331,12 +536,6 @@
      #   replacement: $1
      #   action: replace
  
@@ -1042,7 +1044,7 @@
    ## Settings affecting alertmanagerSpec
    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#alertmanagerspec
    ##
-@@ -1381,39 +582,13 @@
+@@ -1383,39 +582,13 @@
  
      ## AlertmanagerConfigs to be selected to merge and configure Alertmanager with.
      ##
@@ -1089,7 +1091,7 @@
  
      ## AlermanagerConfig to be used as top level configuration
      ##
-@@ -1692,7 +867,7 @@
+@@ -1694,7 +867,7 @@
      namespace: cattle-dashboards
      # Whether to create the default namespace as a Helm managed namespace or use an existing namespace
      # If false, the defaultDashboards.namespace will be created as a Helm managed namespace
@@ -1098,7 +1100,7 @@
      # Whether the Helm managed namespace created by this chart should be left behind on a Helm uninstall
      # If you place other dashboards in this namespace, then they will be deleted on a helm uninstall
      # Ignore if useExistingNamespace is true
-@@ -1956,1713 +1131,16 @@
+@@ -1958,1713 +1131,15 @@
    testFramework:
      enabled: false
  
@@ -2352,7 +2354,7 @@
 -      enabled: true
 -      image:
 -        repository: rancher/mirrored-ingress-nginx-kube-webhook-certgen
--        tag: v20221220-controller-v1.5.1-58-g787ea74b6
+-        tag: v1.4.3
 -        sha: ""
 -        pullPolicy: IfNotPresent
 -      resources: {}
@@ -2774,15 +2776,14 @@
  ## Deploy a Prometheus instance
  ##
  prometheus:
--  enabled: true
+   enabled: true
  
 -  ## Toggle prometheus into agent mode
 -  ## Note many of features described below (e.g. rules, query, alerting, remote read, thanos) will not work in agent mode.
 -  ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/designs/prometheus-agent.md
 -  ##
 -  agentMode: false
-+  enabled: true
- 
+-
    ## Annotations for Prometheus
    ##
    annotations: {}
@@ -2813,7 +2814,7 @@
    ## Service account for Prometheuses to use.
    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
    ##
-@@ -3670,101 +1148,6 @@
+@@ -3672,101 +1147,6 @@
      create: true
      name: ""
      annotations: {}
@@ -2915,7 +2916,7 @@
  
    ## Configuration for Prometheus service
    ##
-@@ -3822,47 +1205,7 @@
+@@ -3824,47 +1204,7 @@
      ## Ref: https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/#ServiceSpec
      publishNotReadyAddresses: false
  
@@ -2964,7 +2965,7 @@
  
    ## Configure pod disruption budgets for Prometheus
    ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
-@@ -3874,46 +1217,6 @@
+@@ -3876,46 +1216,6 @@
      minAvailable: 1
      maxUnavailable: ""
  
@@ -3011,7 +3012,7 @@
    ## ExtraSecret can be used to store various data in an extra secret
    ## (use it for example to store hashed basic auth credentials)
    extraSecret:
-@@ -3962,89 +1265,17 @@
+@@ -3964,89 +1264,17 @@
        #   hosts:
        #     - prometheus.example.com
  
@@ -3102,7 +3103,7 @@
  
      ## scheme: HTTP scheme to use for scraping. Can be used with `tlsConfig` for example if using istio mTLS.
      scheme: ""
-@@ -4072,12 +1303,6 @@
+@@ -4074,12 +1302,6 @@
      #   replacement: $1
      #   action: replace
  
@@ -3115,7 +3116,7 @@
    ## Settings affecting prometheusSpec
    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#prometheusspec
    ##
-@@ -4090,10 +1315,6 @@
+@@ -4092,10 +1314,6 @@
      ##
      apiserverConfig: {}
  
@@ -3126,7 +3127,7 @@
      ## Interval between consecutive scrapes.
      ## Defaults to 30s.
      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/release-0.44/pkg/prometheus/promcfg.go#L180-L183
-@@ -4102,11 +1323,11 @@
+@@ -4104,11 +1322,11 @@
  
      ## Number of seconds to wait for target to respond before erroring
      ##
@@ -3140,7 +3141,7 @@
  
      ## ListenLocal makes the Prometheus server listen on loopback, so that it does not bind against the Pod IP.
      ##
-@@ -4118,10 +1339,6 @@
+@@ -4120,10 +1338,6 @@
      ##
      enableAdminAPI: false
  
@@ -3151,7 +3152,7 @@
      ## WebTLSConfig defines the TLS parameters for HTTPS
      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#webtlsconfig
      web: {}
-@@ -4189,14 +1406,6 @@
+@@ -4191,14 +1405,6 @@
      ##
      enableRemoteWriteReceiver: false
  
@@ -3166,7 +3167,7 @@
      ## Name of the external label used to denote Prometheus instance name
      ##
      prometheusExternalLabelName: ""
-@@ -4231,13 +1440,6 @@
+@@ -4233,13 +1439,6 @@
      ##
      query: {}
  
@@ -3180,7 +3181,7 @@
      ## If true, a nil or {} value for prometheus.prometheusSpec.ruleSelector will cause the
      ## prometheus resource to be created with selectors based on values in the helm deployment,
      ## which will also match the PrometheusRule resources created
-@@ -4247,21 +1449,13 @@
+@@ -4249,21 +1448,13 @@
      ## PrometheusRules to be selected for target discovery.
      ## If {}, select all PrometheusRules
      ##
@@ -3209,7 +3210,7 @@
  
      ## If true, a nil or {} value for prometheus.prometheusSpec.serviceMonitorSelector will cause the
      ## prometheus resource to be created with selectors based on values in the helm deployment,
-@@ -4272,19 +1466,13 @@
+@@ -4274,19 +1465,13 @@
      ## ServiceMonitors to be selected for target discovery.
      ## If {}, select all ServiceMonitors
      ##
@@ -3236,7 +3237,7 @@
  
      ## If true, a nil or {} value for prometheus.prometheusSpec.podMonitorSelector will cause the
      ## prometheus resource to be created with selectors based on values in the helm deployment,
-@@ -4295,18 +1483,13 @@
+@@ -4297,18 +1482,13 @@
      ## PodMonitors to be selected for target discovery.
      ## If {}, select all PodMonitors
      ##
@@ -3262,7 +3263,7 @@
  
      ## If true, a nil or {} value for prometheus.prometheusSpec.probeSelector will cause the
      ## prometheus resource to be created with selectors based on values in the helm deployment,
-@@ -4317,40 +1500,13 @@
+@@ -4319,40 +1499,13 @@
      ## Probes to be selected for target discovery.
      ## If {}, select all Probes
      ##
@@ -3310,7 +3311,7 @@
  
      ## How long to retain metrics
      ##
-@@ -4358,12 +1514,7 @@
+@@ -4360,12 +1513,7 @@
  
      ## Maximum size of metrics
      ##
@@ -3324,7 +3325,7 @@
  
      ## Enable compression of the write-ahead log using Snappy.
      ##
-@@ -4433,13 +1584,6 @@
+@@ -4435,13 +1583,6 @@
      #         - e2e-az1
      #         - e2e-az2
  
@@ -3338,7 +3339,7 @@
      ## The remote_write spec configuration for Prometheus.
      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#remotewritespec
      remoteWrite: []
-@@ -4460,6 +1604,8 @@
+@@ -4462,6 +1603,8 @@
          memory: 750Mi
          cpu: 750m
  
@@ -3347,16 +3348,7 @@
      ## Prometheus StorageSpec for persistent data
      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
      ##
-@@ -4703,7 +1849,7 @@
-     ## they will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object,
-     ## and servicemonitors will be installed in the default service namespace.
-     ## Defaults to false.
--    ignoreNamespaceSelectors: true
-+    ignoreNamespaceSelectors: false
- 
-     ## EnforcedNamespaceLabel enforces adding a namespace label of origin for each alert and metric that is user created.
-     ## The label value will always be the namespace of the object that is being created.
-@@ -4727,15 +1873,6 @@
+@@ -4729,15 +1872,6 @@
      ## of Prometheus >= 2.16.0. For more details, see the Prometheus docs (https://prometheus.io/docs/guides/query-log/)
      queryLogFile: false
  
@@ -3372,7 +3364,7 @@
      ## EnforcedSampleLimit defines global limit on number of scraped samples that will be accepted. This overrides any SampleLimit
      ## set per ServiceMonitor or/and PodMonitor. It is meant to be used by admins to enforce the SampleLimit to keep overall
      ## number of samples/series under the desired limit. Note that if SampleLimit is lower that value will be taken instead.
-@@ -4747,7 +1884,6 @@
+@@ -4749,7 +1883,6 @@
      ## if either value is zero, in which case the non-zero value will be used. If both values are zero, no limit is enforced.
      enforcedTargetLimit: false
  
@@ -3380,7 +3372,7 @@
      ## Per-scrape limit on number of labels that will be accepted for a sample. If more than this number of labels are present
      ## post metric-relabeling, the entire scrape will be treated as failed. 0 means no limit. Only valid in Prometheus versions
      ## 2.27.0 and newer.
-@@ -4785,25 +1921,6 @@
+@@ -4787,25 +1920,6 @@
      #      - a1.app.local
      #      - b1.app.local
  
@@ -3406,7 +3398,7 @@
    additionalRulesForClusterRole: []
    #  - apiGroups: [ "" ]
    #    resources:
-@@ -5128,12 +2245,6 @@
+@@ -5130,12 +2244,6 @@
      #   replacement: $1
      #   action: replace
  
@@ -3419,7 +3411,7 @@
    ## Settings affecting thanosRulerpec
    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#thanosrulerspec
    ##
-@@ -5216,24 +2327,16 @@
+@@ -5218,24 +2326,16 @@
  
      ## AlertmanagerConfig define configuration for connecting to alertmanager.
      ## Only available with Thanos v0.10.0 and higher. Maps to the alertmanagers.config Thanos Ruler arg.
@@ -3454,7 +3446,7 @@
  
      ## DEPRECATED. Define URLs to send alerts to Alertmanager. For Thanos v0.10.0 and higher, alertmanagersConfig should be used instead.
      ## Note: this field will be ignored if alertmanagersConfig is specified. Maps to the alertmanagers.url Thanos Ruler arg.
-@@ -5248,22 +2351,13 @@
+@@ -5250,22 +2350,13 @@
      ##
      routePrefix: /
  
@@ -3484,7 +3476,7 @@
  
      ## QueryEndpoints defines Thanos querier endpoints from which to query metrics.
      ## Maps to the --query flag of thanos ruler.
-@@ -5271,22 +2365,7 @@
+@@ -5273,22 +2364,7 @@
  
      ## Define configuration for connecting to thanos query instances. If this is defined, the queryEndpoints field will be ignored.
      ## Maps to the query.config CLI argument. Only available with thanos v0.11.0 and higher.
@@ -3508,7 +3500,7 @@
  
      ## Labels configure the external label pairs to ThanosRuler. A default replica
      ## label `thanos_ruler_replica` will be always added as a label with the value
-@@ -5297,17 +2376,6 @@
+@@ -5299,17 +2375,6 @@
      ##
      paused: false
  
@@ -3526,7 +3518,7 @@
      ## Define which Nodes the Pods are scheduled on.
      ## ref: https://kubernetes.io/docs/user-guide/node-selection/
      ##
-@@ -5375,8 +2443,6 @@
+@@ -5377,8 +2442,6 @@
        runAsNonRoot: true
        runAsUser: 1000
        fsGroup: 2000
@@ -3535,7 +3527,7 @@
  
      ## ListenLocal makes the ThanosRuler server listen on loopback, so that it does not bind against the Pod IP.
      ## Note this is only for the ThanosRuler UI, not the gossip communication.
-@@ -5419,13 +2485,3 @@
+@@ -5421,13 +2484,3 @@
  ## Setting to true produces cleaner resource names, but requires a data migration because the name of the persistent volume changes. Therefore this should only be set once on initial installation.
  ##
  cleanPrometheusOperatorObjectNames: false

@@ -1,7 +1,5 @@
 workingDir: ""
-url: https://github.com/rancher/charts.git
-subdirectory: charts/rancher-monitoring/104.0.0-rc1+up57.0.3
-commit: 414f0688c935dd41145a037c1ae25cae9ebe2159
+url: packages/rancher-monitoring/57.0.3/rancher-monitoring
 version: 0.4.4
 ignoreDependencies:
   - hardenedKubelet
