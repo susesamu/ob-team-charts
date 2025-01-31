@@ -8,6 +8,13 @@ At a high level, these problems are:
     - In other words, we do a rebase and expect to remove CVEs, but they remain because some charts use old tags.
 - Varying patches based on Upstream Chart Version for Rancher Branch on `rancher/charts`
 
+## Why only `main` branch in this repo?
+The principal function of this repo is to reduce redundant work from processes used by the O&B team today.
+The current process to maintain Monitoring and Logging -essentially- involve us maintaining the same upstream version in multiple Rancher Branches.
+
+Instead, if we apply most of our Rancher specific changes in a Rancher version agnostic manner we can maintain important changes once.
+Then when the chart lands in a Minor version specific `rancher/charts` branch it can have Rancher minor specific patching applied.
+
 ## Why move Prometheus Federator repo charts to the new repo and not part of `rancher/charts`?
 The charts in Prometheus Federator repo were: prometheus-federator, rancher-project-monitoring, and helm-project-operator.
 
