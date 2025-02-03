@@ -1,6 +1,6 @@
 --- charts-original/templates/exporters/kube-etcd/servicemonitor.yaml
 +++ charts/templates/exporters/kube-etcd/servicemonitor.yaml
-@@ -54,10 +54,20 @@
+@@ -58,10 +58,20 @@
        {{- end}}
        insecureSkipVerify: {{ .Values.kubeEtcd.serviceMonitor.insecureSkipVerify }}
      {{- end }}

@@ -1,6 +1,6 @@
 --- charts-original/charts/prometheus-node-exporter/templates/daemonset.yaml
 +++ charts/charts/prometheus-node-exporter/templates/daemonset.yaml
-@@ -46,7 +46,7 @@
+@@ -49,7 +49,7 @@
        containers:
          {{- $servicePort := ternary .Values.kubeRBACProxy.port .Values.service.port .Values.kubeRBACProxy.enabled }}
          - name: node-exporter
@@ -9,9 +9,9 @@
            imagePullPolicy: {{ .Values.image.pullPolicy }}
            args:
              - --path.procfs=/host/proc
-@@ -194,10 +194,11 @@
-             - name: kube-rbac-proxy-config
-               mountPath: /etc/kube-rbac-proxy-config
+@@ -215,10 +215,11 @@
+             {{- toYaml . | nindent 12 }}
+             {{- end }}
            imagePullPolicy: {{ .Values.kubeRBACProxy.image.pullPolicy }}
 +          {{- $base_registry := (include "monitoring_registry" .) }}
            {{- if .Values.kubeRBACProxy.image.sha }}
