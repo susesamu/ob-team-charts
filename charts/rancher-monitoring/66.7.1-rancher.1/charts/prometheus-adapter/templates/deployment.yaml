@@ -111,8 +111,11 @@ spec:
       {{- with .Values.extraContainers }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
-      nodeSelector: {{ include "linux-node-selector" . | nindent 8 }}
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      nodeSelector:
+        kubernetes.io/os: linux
+        {{- with .Values.nodeSelector }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       affinity:
         {{- toYaml .Values.affinity | nindent 8 }}
       topologySpreadConstraints:
