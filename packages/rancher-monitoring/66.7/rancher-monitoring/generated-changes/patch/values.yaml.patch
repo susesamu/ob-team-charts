@@ -564,7 +564,7 @@
 +  ## Image to use to run the scripts
 +  image:
 +    repository: rancher/shell
-+    tag: v0.2.1
++    tag: v0.3.0
 +
 +## Rancher Monitoring
 +##
@@ -924,7 +924,7 @@
 +  proxy:
 +    image:
 +      repository: rancher/mirrored-library-nginx
-+      tag: 1.24.0-alpine
++      tag: 1.27.2-alpine
 +
 +  ## Enable an Specify container in extraContainers. This is meant to allow adding an authentication proxy to a grafana pod
 +  extraContainers: |
@@ -1036,7 +1036,7 @@
 +        repository: rancher/mirrored-prometheus-operator-admission-webhook
          # if not set appVersion field from Chart.yaml is used
 -        tag: ""
-+        tag: v0.75.1
++        tag: v0.79.0
          sha: ""
          pullPolicy: IfNotPresent
  
@@ -1048,7 +1048,7 @@
 -        repository: ingress-nginx/kube-webhook-certgen
 -        tag: v20221220-controller-v1.5.1-58-g787ea74b6
 +        repository: rancher/mirrored-ingress-nginx-kube-webhook-certgen
-+        tag: v1.4.3
++        tag: v1.5.0
          sha: ""
          pullPolicy: IfNotPresent
        resources: {}
@@ -1061,7 +1061,7 @@
 -    # if not set appVersion field from Chart.yaml is used
 -    tag: ""
 +    repository: rancher/mirrored-prometheus-operator-prometheus-operator
-+    tag: v0.75.1
++    tag: v0.79.0
      sha: ""
      pullPolicy: IfNotPresent
  
@@ -1074,7 +1074,7 @@
 -      # if not set appVersion field from Chart.yaml is used
 -      tag: ""
 +      repository: rancher/mirrored-prometheus-operator-prometheus-config-reloader
-+      tag: v0.75.1
++      tag: v0.79.0
        sha: ""
  
      # add prometheus config reloader liveness and readiness probe. Default: false
@@ -1199,7 +1199,7 @@
 +    proxy:
 +      image:
 +        repository: rancher/mirrored-library-nginx
-+        tag: 1.24.0-alpine
++        tag: 1.27.2-alpine
 +
      ## Containers allows injecting additional containers. This is meant to allow adding an authentication proxy to a Prometheus pod.
      ## if using proxy extraContainer update targetPort with proxy container port
