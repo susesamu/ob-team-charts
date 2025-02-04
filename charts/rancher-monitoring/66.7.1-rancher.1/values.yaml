@@ -561,8 +561,8 @@ upgrade:
   enabled: true
   ## Image to use to run the scripts
   image:
-    repository: rancher/shell
-    tag: v0.3.0
+    repository: rancher/kuberlr-kubectl
+    tag: v4.0.0
 
 ## Rancher Monitoring
 ##
