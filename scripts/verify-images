@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+IMAGE_LIST=$(grep "image:" | awk '{$1=$1};1' | cut -d' ' -f2 | sort -u | sed -E 's|"||g;s|^docker.io/||' | awk -F: '{print $1, $2 ? $2 : "latest"}')
+
+echo "We will check: $IMAGE_LIST"
+
+# Function to check if an image:tag exists
+check_docker_image() {
+  local repo=$1
+  local tag=${2:-latest}
+
+  # Authenticate once and store the token
+  tokenUri="https://auth.docker.io/token"
+  service="service=registry.docker.io"
+  scope="scope=repository:$repo:pull"  # Use a common public repo for auth
+  local DOCKER_HUB_TOKEN=$(curl --silent --get --data-urlencode "$service" --data-urlencode "$scope" "$tokenUri" | jq --raw-output '.token')
+
+
+  local manifestUri="https://registry-1.docker.io/v2/$repo/manifests/$tag"
+  local authz="Authorization: Bearer $DOCKER_HUB_TOKEN"
+
+  if curl --silent --head --fail -H "Accept: application/vnd.docker.distribution.manifest.v2+json" -H "$authz" "$manifestUri" >/dev/null; then
+    echo "✔ $repo:$tag exists"
+  else
+    echo "✘ $repo:$tag NOT found"
+  fi
+}
+
+# Run your existing command, process the list, and check each image
+echo "$IMAGE_LIST" | while read -r repo tag; do
+  check_docker_image "$repo" "$tag"
+done
+wait
