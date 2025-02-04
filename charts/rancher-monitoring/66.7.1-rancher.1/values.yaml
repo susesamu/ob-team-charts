@@ -3287,7 +3287,6 @@ prometheusOperator:
       ## Prometheus-operator webhook image
       ##
       image:
-        registry: quay.io
         repository: rancher/mirrored-prometheus-operator-admission-webhook
         # if not set appVersion field from Chart.yaml is used
         tag: v0.79.0
