@@ -559,7 +559,7 @@ entries:
       catalog.cattle.io/upstream-version: 66.7.1
     apiVersion: v2
     appVersion: v0.79.0
-    created: "2025-02-03T19:58:14.175831-05:00"
+    created: "2025-02-03T20:12:08.762121-05:00"
     dependencies:
     - condition: grafana.enabled
       name: grafana
@@ -653,7 +653,7 @@ entries:
       and Prometheus rules combined with documentation and scripts to provide easy
       to operate end-to-end Kubernetes cluster monitoring with Prometheus using the
       Prometheus Operator.
-    digest: 18425fdc8dc6cd41f9a6c21af99d612cfd5816df6877a7fa2cb475d948961003
+    digest: a352ac9d585819ee75e8a48dcc227e65e15e43ebbe1b269a5129b1e24c217ddd
     home: https://github.com/prometheus-operator/kube-prometheus
     icon: file://assets/logos/rancher-monitoring.png
     keywords:
@@ -977,9 +977,9 @@ entries:
       catalog.cattle.io/namespace: cattle-monitoring-system
       catalog.cattle.io/release-name: rancher-monitoring-crd
     apiVersion: v2
-    created: "2025-02-03T16:35:25.87988-05:00"
+    created: "2025-02-03T20:12:08.768511-05:00"
     description: Installs the CRDs for rancher-monitoring.
-    digest: 4a1b08035e7f299815349f82e795138e48e53292781df89b8107f8923a47f3b1
+    digest: 84df806892a5d013563103fda6927701d7bc7800dbc690f0e7c011f420cde4a3
     name: rancher-monitoring-crd
     type: application
     urls:

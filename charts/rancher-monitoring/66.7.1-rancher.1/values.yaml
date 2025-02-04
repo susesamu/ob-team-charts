@@ -172,7 +172,7 @@ k3sServer:
         targetLabel: metrics_path
 
 hardened:
-  k3s:  
+  k3s:
     networkPolicy:
       enabled: true
 
@@ -334,10 +334,10 @@ rke2Etcd:
 
 rke2IngressNginx:
   enabled: false
-  networkPolicy:
-    enabled: false
   metricsPort: 10254
   component: ingress-nginx
+  networkPolicy:
+    enabled: false
   # in the RKE2 cluster, the ingress-nginx-controller is deployed
   # as a non-hostNetwork workload starting at the following versions
   # - >= v1.22.12+rke2r1 < 1.23.0-0
@@ -494,7 +494,7 @@ rke2IngressNginx:
 ##
 
 # hardenedKubelet can only be deployed if kubelet.enabled=true
-# If enabled, it replaces the ServiceMonitor deployed by the default kubelet option with a 
+# If enabled, it replaces the ServiceMonitor deployed by the default kubelet option with a
 # PushProx-based exporter that does not require a host port to be open to scrape metrics.
 hardenedKubelet:
   enabled: false
@@ -540,7 +540,7 @@ hardenedKubelet:
         targetLabel: metrics_path
 
 # hardenedNodeExporter can only be deployed if nodeExporter.enabled=true
-# If enabled, it replaces the ServiceMonitor deployed by the default nodeExporter with a 
+# If enabled, it replaces the ServiceMonitor deployed by the default nodeExporter with a
 # PushProx-based exporter that does not require a host port to be open to scrape metrics.
 hardenedNodeExporter:
   enabled: false
@@ -590,7 +590,7 @@ ingressNginx:
   ## The namespace to search for your nginx-ingress-controller
   ##
   namespace: ingress-nginx
-  
+
   service:
     port: 9913
     targetPort: 10254
@@ -830,8 +830,6 @@ additionalPrometheusRulesMap: {}
 ##
 global:
   cattle:
-    psp:
-      enabled: false
 
     systemDefaultRegistry: ""
     ## Windows Monitoring
@@ -847,7 +845,7 @@ global:
     enabled: false
   kubectl:
      repository: rancher/kubectl
-     tag: v1.20.2
+     tag: v1.29.2
      pullPolicy: IfNotPresent
   rbac:
     ## Create RBAC resources for ServiceAccounts and users
@@ -859,6 +857,10 @@ global:
       create: true
       ## Aggregate default user ClusterRoles into default k8s ClusterRoles
       aggregateToDefaultRoles: true
+
+    ## Create ClusterRoles that extend the existing view, edit and admin ClusterRoles to interact with prometheus-operator CRDs
+    ## Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles
+    createAggregateClusterRoles: false
 
     pspAnnotations: {}
       ## Specify pod annotations
@@ -872,7 +874,7 @@ global:
 
   ## Global image registry to use if it needs to be overriden for some specific use cases (e.g local registries, custom images, ...)
   ##
-  imageRegistry: docker.io
+  imageRegistry: "docker.io"
 
   ## Reference to one or more secrets to be used when pulling images
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
@@ -885,6 +887,13 @@ global:
 windowsMonitoring:
   ## Deploys the windows-exporter and Windows-specific dashboards and rules (job name must be 'windows-exporter')
   enabled: false
+
+loggingMonitors:
+  ## Deploys logging-specific dashboards, make sure to also set metrics.serviceMonitor to true in the logging chart for both fluentd and fluentbit
+  fluentd:
+    enabled: false
+  fluentbit:
+    enabled: false
 
 ## Configuration for prometheus-windows-exporter
 ## ref: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-windows-exporter
@@ -1018,7 +1027,6 @@ alertmanager:
   ## ref: https://prometheus.io/docs/alerting/notifications/
   ##      https://prometheus.io/docs/alerting/notification_examples/
   ##
-
   templateFiles:
     rancher_defaults.tmpl: |-
         {{- define "slack.rancher.text" -}}
@@ -1760,6 +1768,11 @@ grafana:
 
   adminPassword: prom-operator
 
+  rbac:
+    ## If true, Grafana PSPs will be created
+    ##
+    pspEnabled: false
+
   ingress:
     ## If true, Grafana Ingress will be created
     ##
@@ -1914,10 +1927,7 @@ grafana:
   ## Passed to grafana subchart and used by servicemonitor below
   ##
   service:
-    portName: http-web
-    ipFamilies: []
-    ipFamilyPolicy: ""
-
+    portName: nginx-http
     ## Port for Grafana Service to listen on
     ##
     port: 80
@@ -1932,12 +1942,15 @@ grafana:
     ##
     type: ClusterIP
 
+    ipFamilies: []
+    ipFamilyPolicy: ""
+
   proxy:
     image:
       repository: rancher/mirrored-library-nginx
       tag: 1.24.0-alpine
 
-  ## Enable any Specify container in extraContainers. This is meant to allow adding an authentication proxy to a grafana pod
+  ## Enable an Specify container in extraContainers. This is meant to allow adding an authentication proxy to a grafana pod
   extraContainers: |
     - name: grafana-proxy
       args:
@@ -1972,6 +1985,8 @@ grafana:
           mode: 438
           path: nginx.conf
 
+  ## If true, create a serviceMonitor for grafana
+  ##
   serviceMonitor:
     # If true, a ServiceMonitor CRD is created for a prometheus operator
     # https://github.com/coreos/prometheus-operator
@@ -2429,7 +2444,6 @@ coreDns:
     enabled: true
     port: 9153
     targetPort: 9153
-
     ipDualStack:
       enabled: false
       ipFamilies: ["IPv6", "IPv4"]
@@ -3083,6 +3097,11 @@ prometheus-node-exporter:
       # attachMetadata:
       #   node: false
 
+  rbac:
+    ## If true, create PSPs for node-exporter
+    ##
+    pspEnabled: false
+
 ## Manages Prometheus and Alertmanager components
 ##
 prometheusOperator:
@@ -3105,8 +3124,8 @@ prometheusOperator:
     enabled: true
     # Value must match version names from https://golang.org/pkg/crypto/tls/#pkg-constants
     tlsMinVersion: VersionTLS13
-    # Users who are deploying this chart in GKE private clusters will need to add firewall rules to expose this port for admissions webhooks
-    internalPort: 8443
+    # The default webhook port is 10250 in order to work out-of-the-box in GKE private clusters and avoid adding firewall rules.
+    internalPort: 10250
 
   ## Liveness probe for the prometheusOperator deployment
   ##
@@ -3271,7 +3290,7 @@ prometheusOperator:
         registry: quay.io
         repository: rancher/mirrored-prometheus-operator-admission-webhook
         # if not set appVersion field from Chart.yaml is used
-        tag: v0.72.0
+        tag: v0.75.1
         sha: ""
         pullPolicy: IfNotPresent
 
@@ -3641,13 +3660,13 @@ prometheusOperator:
 
   ## Resource limits & requests
   ##
-  resources:
-    limits:
-      cpu: 200m
-      memory: 500Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
+  resources: {}
+  # limits:
+  #   cpu: 200m
+  #   memory: 200Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 100Mi
 
   ## Operator Environment
   ##  env:
@@ -3750,7 +3769,7 @@ prometheusOperator:
   ##
   image:
     repository: rancher/mirrored-prometheus-operator-prometheus-operator
-    tag: v0.72.0
+    tag: v0.75.1
     sha: ""
     pullPolicy: IfNotPresent
 
@@ -3775,7 +3794,7 @@ prometheusOperator:
   prometheusConfigReloader:
     image:
       repository: rancher/mirrored-prometheus-operator-prometheus-config-reloader
-      tag: v0.72.0
+      tag: v0.75.1
       sha: ""
 
     # add prometheus config reloader liveness and readiness probe. Default: false
@@ -3795,7 +3814,6 @@ prometheusOperator:
   thanosImage:
     repository: rancher/mirrored-thanos-thanos
     tag: v0.37.2
-    sha: ""
 
   ## Set a Label Selector to filter watched prometheus and prometheusAgent
   ##
@@ -4368,7 +4386,7 @@ prometheus:
 
     ## Number of seconds to wait for target to respond before erroring
     ##
-    scrapeTimeout: "30s"
+    # scrapeTimeout: ""
 
     ## List of scrape classes to expose to scraping objects such as
     ## PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.
@@ -4418,9 +4436,8 @@ prometheus:
     ## Image of Prometheus.
     ##
     image:
-      repository: rancher/mirrored-prometheus-prometheus
+      repository: prometheus/prometheus
       tag: v2.55.1
-      sha: ""
 
     ## Tolerations for use with node taints
     ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
@@ -5494,7 +5511,6 @@ thanosRuler:
     image:
       repository: rancher/mirrored-thanos-thanos
       tag: v0.37.2
-      sha: ""
 
     ## Namespaces to be selected for PrometheusRules discovery.
     ## If nil, select own namespace. Namespaces to be selected for ServiceMonitor discovery.
@@ -5589,10 +5605,6 @@ thanosRuler:
     ## The external URL the Thanos Ruler instances will be available under. This is necessary to generate correct URLs. This is necessary if Thanos Ruler is not served from root of a DNS name. string false
     ##
     externalPrefix:
-
-    ## If true, http://{{ template "kube-prometheus-stack.thanosRuler.name" . }}.{{ template "kube-prometheus-stack.namespace" . }}:{{ .Values.thanosRuler.service.port }}
-    ## will be used as value for externalPrefix
-    externalPrefixNilUsesHelmValues: true
 
     ## The route prefix ThanosRuler registers HTTP handlers for. This is useful, if using ExternalURL and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true,
     ## but the server serves requests under a different route prefix. For example for use with kubectl proxy.
