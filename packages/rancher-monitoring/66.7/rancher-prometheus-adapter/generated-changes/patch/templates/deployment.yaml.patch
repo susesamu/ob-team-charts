@@ -9,16 +9,19 @@
          imagePullPolicy: {{ .Values.image.pullPolicy }}
          {{- with .Values.env }}
          env:
-@@ -111,7 +111,7 @@
-       {{- with .Values.extraContainers }}
+@@ -112,7 +112,10 @@
        {{- toYaml . | nindent 6 }}
        {{- end }}
--      nodeSelector:
-+      nodeSelector: {{ include "linux-node-selector" . | nindent 8 }}
-         {{- toYaml .Values.nodeSelector | nindent 8 }}
+       nodeSelector:
+-        {{- toYaml .Values.nodeSelector | nindent 8 }}
++        kubernetes.io/os: linux
++        {{- with .Values.nodeSelector }}
++        {{- toYaml . | nindent 8 }}
++        {{- end }}
        affinity:
          {{- toYaml .Values.affinity | nindent 8 }}
-@@ -124,8 +124,10 @@
+       topologySpreadConstraints:
+@@ -124,8 +127,10 @@
        securityContext:
          {{- toYaml .Values.podSecurityContext | nindent 8 }}
        {{- end }}
