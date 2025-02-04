@@ -562,7 +562,7 @@ upgrade:
   ## Image to use to run the scripts
   image:
     repository: rancher/shell
-    tag: v0.2.1
+    tag: v0.3.0
 
 ## Rancher Monitoring
 ##
@@ -1948,7 +1948,7 @@ grafana:
   proxy:
     image:
       repository: rancher/mirrored-library-nginx
-      tag: 1.24.0-alpine
+      tag: 1.27.2-alpine
 
   ## Enable an Specify container in extraContainers. This is meant to allow adding an authentication proxy to a grafana pod
   extraContainers: |
@@ -3290,7 +3290,7 @@ prometheusOperator:
         registry: quay.io
         repository: rancher/mirrored-prometheus-operator-admission-webhook
         # if not set appVersion field from Chart.yaml is used
-        tag: v0.75.1
+        tag: v0.79.0
         sha: ""
         pullPolicy: IfNotPresent
 
@@ -3400,7 +3400,7 @@ prometheusOperator:
       enabled: true
       image:
         repository: rancher/mirrored-ingress-nginx-kube-webhook-certgen
-        tag: v1.4.3
+        tag: v1.5.0
         sha: ""
         pullPolicy: IfNotPresent
       resources: {}
@@ -3769,7 +3769,7 @@ prometheusOperator:
   ##
   image:
     repository: rancher/mirrored-prometheus-operator-prometheus-operator
-    tag: v0.75.1
+    tag: v0.79.0
     sha: ""
     pullPolicy: IfNotPresent
 
@@ -3794,7 +3794,7 @@ prometheusOperator:
   prometheusConfigReloader:
     image:
       repository: rancher/mirrored-prometheus-operator-prometheus-config-reloader
-      tag: v0.75.1
+      tag: v0.79.0
       sha: ""
 
     # add prometheus config reloader liveness and readiness probe. Default: false
@@ -4951,7 +4951,7 @@ prometheus:
     proxy:
       image:
         repository: rancher/mirrored-library-nginx
-        tag: 1.24.0-alpine
+        tag: 1.27.2-alpine
 
     ## Containers allows injecting additional containers. This is meant to allow adding an authentication proxy to a Prometheus pod.
     ## if using proxy extraContainer update targetPort with proxy container port
