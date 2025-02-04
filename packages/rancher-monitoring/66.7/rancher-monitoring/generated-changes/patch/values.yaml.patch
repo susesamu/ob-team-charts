@@ -659,8 +659,8 @@
 +  seLinux:
 +    enabled: false
 +  kubectl:
-+     repository: rancher/kubectl
-+     tag: v1.29.2
++     repository: rancher/kuberlr-kubectl
++     tag: v4.0.0
 +     pullPolicy: IfNotPresent
    rbac:
 +    ## Create RBAC resources for ServiceAccounts and users
@@ -1127,7 +1127,8 @@
      ##
      image:
 -      registry: quay.io
-       repository: prometheus/prometheus
+-      repository: prometheus/prometheus
++      repository: rancher/prom-prometheus
        tag: v2.55.1
 -      sha: ""
  
