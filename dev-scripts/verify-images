@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-IMAGE_LIST=$(grep "image:" | awk '{$1=$1};1' | cut -d' ' -f2 | sort -u | sed -E 's|"||g;s|^docker.io/||' | awk -F: '{print $1, $2 ? $2 : "latest"}')
+IMAGE_LIST=$(grep "image:\|docker.io"|grep "image:\|docker.io"|grep -vi registry|grep -v "image:$"|grep -v "{{"| awk '{$1=$1};1'|cut -d= -f2 | cut -d' ' -f2 | sort -u | sed -E 's|"||g;s|^docker.io/||' | awk -F: '{print $1, $2 ? $2 : "latest"}')
 
 echo "We will check: $IMAGE_LIST"
 

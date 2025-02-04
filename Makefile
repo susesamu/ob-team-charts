@@ -26,7 +26,16 @@ rebase:
 	./scripts/charts-build-scripts/rebase
 
 dev-prepare: pull-scripts
+	@./bin/charts-build-scripts prepare --soft-errors
+
+dev-prepare-cached: pull-scripts
 	@./bin/charts-build-scripts prepare --soft-errors --useCache
+
+patch-cached: pull-scripts
+	@./bin/charts-build-scripts patch --useCache
+
+charts-cached: pull-scripts
+	@./bin/charts-build-scripts charts --useCache
 
 CHARTS_BUILD_SCRIPTS_TARGETS := prepare patch clean clean-cache charts list index unzip zip standardize template
 
