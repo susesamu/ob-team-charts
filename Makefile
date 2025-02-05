@@ -14,10 +14,13 @@ rebase:
 	./scripts/charts-build-scripts/rebase
 
 dev-prepare: pull-scripts
-	@./bin/charts-build-scripts prepare --soft-errors
+	@./bin/charts-build-scripts prepare --soft-errors --debug
 
 dev-prepare-cached: pull-scripts
-	@./bin/charts-build-scripts prepare --soft-errors --useCache
+	@./bin/charts-build-scripts prepare --soft-errors --debug --useCache
+
+prepare-cached: pull-scripts
+	@./bin/charts-build-scripts prepare --useCache
 
 patch-cached: pull-scripts
 	@./bin/charts-build-scripts patch --useCache
