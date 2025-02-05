@@ -86,12 +86,14 @@ From here a good next step is to run `make prepare` on the new chart before our 
 
 ## Chart the game plan
 
+> Excuse the silly dad-joke pun.
+
 This part of the process is helpful to ensure we're thinking from the process top down.
 We already will know all the chart versions and hashes we need to get the process started.
 However, the new images - of which we'll need to mirror - will be revealed when we first prepare components.
 
 ### Outline
-1. Find the upstream target hash first,
+1. Find the new version's commit hash targets,
 2. Find the sub-charts version constraints,
 3. Resolve the newest version of each sub-chart and note the hash
 
@@ -99,8 +101,13 @@ However, the new images - of which we'll need to mirror - will be revealed when 
 ### Find the new versions and commit hash targets
 
 Start by referring back to our target tag: [`kube-prometheus-stack-66.7.1`](https://github.com/prometheus-community/helm-charts/tree/kube-prometheus-stack-66.7.1)
+Fetch the commit hash of this tag via `git` cli or GitHub.
 
-Here are the most important facts gathered about that release:
+- The commit hash is: `9c2619e6f3650a5722b0f81f18850b3751ce31ba`,
+
+### Find the sub-charts version constraints
+For this step, we refer to the `Chart.yaml` and find the dependencies listed there and the accepted versions.
+In this case, here are the most important facts gathered about that release:
 
 - The commit hash is: `9c2619e6f3650a5722b0f81f18850b3751ce31ba`,
 - The target chart has subcharts of:
@@ -109,13 +116,7 @@ Here are the most important facts gathered about that release:
   - `grafana` @ `8.7.*`
   - `prometheus-windows-exporter` @ `0.7.*`
 
-<!---
-I was starting to write this out - but TBH I don't think I even always do this.
-Sometimes it's easier to just "send it".
-
-From here, we then need to do ourselves the favor of auditing the subcharts used.
-Continuing in Grafana's repos since that's where we left off, lets find our charts `values.yaml`.
--->
+### Resolve the newest version of each sub-chart and note the hash
 
 Now because the versions have wildcard patches, this means two important things:
 1. We need to manually find the highest patch and use that,
@@ -149,7 +150,7 @@ Our next observation will be to compare to the newest version of Monitoring we h
   - `rancher-prometheus-adapter` 4.2.0 -> 4.11.0
   - `prometheus-windows-exporter` 0.3.1 -> 0.7.1
 
-### Work your way from sub-charts to main-chart (and then dependants)
+## Execute the rebase on the new package
 
 This next phase essentially entails taking the details we organized above and using them to update sub-charts.
 And specifically we're going to work "inside out" meaning; update the sub-charts first, then `rancher-monitoring` chart.
@@ -157,12 +158,27 @@ And specifically we're going to work "inside out" meaning; update the sub-charts
 For any of the "rancher produced" image based charts, we should take care to start with those since they're easiest.
 Often we just need to bump image versions for local charts (pushprox).
 
+### Outline
+1. Work on the sub-charts of the package,
+2. Update the main package for rebase,
+3. Rebuild any dependant packages (Rancher Project Monitoring)
+
+
+### Work on the sub-charts of the package
+
 The overall "loop" over our workflow for each sub-chart target is:
 1. > `PACKAGE=rancher-monitoring/{version}/{target} make prepare`
 2. Fix, or move patches to disable them. (Doing `make patch` as needed)
 3. Redo `make prepare` and then `helm template --debug {target} ./` (where `./` is the path to the temporary `charts`  directory of your target.)
 4. If you see helm errors you know you have more patch changes to make,
 5. Rinse and repeat until you're complete with the current target.
+
+Something's to keep an eye out for that are easy to get mixed up on are:
+- `values.yaml` file patching may "downgrade" the image tags
+  - Make sure you refer to the original chart's `values.yaml` as needed,
+  - Because it's a rebase, generally it's safe to assume the tag versions go up - if not verify it,
+- The `appVersion` of the main rancher chart is used for many -but not all- of the component tags as well.
+  - Keep this in mind for when you mirror images 
 
 That in mind the summary of changes I'm making and in order are:
 1. Pushprox:
@@ -189,14 +205,24 @@ That in mind the summary of changes I'm making and in order are:
    1. Bump the hash version of the package then immediately create a commit,
    2. Run `PACKAGE=rancher-monitoring/66.7/rancher-node-exporter make prepare` - found errors:
       - See git branch for specifics; a lot more conflicts than previous parts,
-6. Rancher Monitoring:
-   1. Finally, after all the sub-charts, bump the hash version then immediately create a commit,
-   2. It gets updated 2 times in this package so get both places,
-   3. Run `PACKAGE=rancher-monitoring/66.7/rancher-monitoring make prepare` - found errors:
-      - Also has lots of changes, check git branch for specifics.
-      - Use notes from [Dan's suggested method](dans-suggested-patch-resolution.md) to find all very broken patches
-      - Once all broken patches disabled, make a test build: `PACKAGE=rancher-monitoring/66.7/rancher-monitoring make charts`
-      - Add back removed broken patches via manual comparison of the last version of `rancher-monitoring` and consider upstream diffs.
+
+At this point, all of the sub-packages for this rebase version should be completed.
+Next you can take on the larger task of the main rancher-monitoring package for this version.
+
+### Update the main package for rebase
+
+For the main rancher-monitoring package we did the following:
+1. After all the sub-charts are updated, bump the hash version then immediately create a commit,
+2. It gets updated 2 times in this package so get both places, (both `commit` fields in the file)
+3. Run `PACKAGE=rancher-monitoring/66.7/rancher-monitoring make prepare` - found errors:
+   - Also has lots of changes, check git branch for specifics.
+   - Use notes from [Dan's suggested method](dans-suggested-patch-resolution.md) to find all very broken patches
+   - Once all broken patches disabled, make a test build: `PACKAGE=rancher-monitoring/66.7/rancher-monitoring make charts`
+   - Add back removed broken patches via manual comparison of the last version of `rancher-monitoring` and consider upstream diffs.
+
+> [!NOTE]
+> This specific example had some undocumented steps but those can be reviewed in the PRs commits.
+> The following is a good summary of the process many of those commits worked though.
 
 The next aspect, that will be new to the process, is to also create a new `rancher-project-monitoring`.
 However before this we should verify the changes this far all work together and sort out rough edges first.
@@ -209,14 +235,55 @@ From within the `charts/rancher-monitoring/{version}` directory, then compare th
 At this point, we're able to create a version of the chart that can be installed by Rancher.
 Doing so reveals the following issues:
 - rancher-monitoring-operator pod with error: `flag provided but not defined: -kubelet-endpoints`
-  - Here is where I realized many of my image tags in `values.yaml` were accidentally downgraded via patching.
-  - To fix this, I referred to the upstream chart versions - then also our dockerhub versions for ones we bump higher (shell, nginx, etc)
+    - Here is where I realized many of my image tags in `values.yaml` were accidentally downgraded via patching.
+    - To fix this, I referred to the upstream chart versions - then also our dockerhub versions for ones we bump higher (shell, nginx, etc)
 - Fixing the previous issue prompted me to re-do the image mirroring step and make a new PR with more images I missed.
 - From within the compiled chart directory (e.g. `ob-team-charts/charts/rancher-monitoring/66.7.1-rancher.1`) run:
-  - `helm template --debug "rancher-monitoring" ./ | ../../../scripts/verify-images`
-  - This will give output to help verify what images need to be mirrored
+    - `helm template --debug "rancher-monitoring" ./ | ../../../dev-scripts/verify-chart-images`
+    - This will give output to help verify what images need to be mirrored
 
 Finally, after the new images are mirrored, and you've debugged the chart fully, you can move onto the `rancher-project-monitoring` steps.
 
-#### Working on `rancher-project-monitoring`
+### Rebuild any dependant packages (Rancher Project Monitoring)
 
+This next step to create `rancher-project-monitoring` can be done in a few ways.
+This repo is still exploring what standards we should use to enforce consistency with this process.
+However, until one is picked we can use which ever method the PR author is familiar with as long as the results are correct.
+
+In this instance the method used is similar to what was done to port `0.3.4` Rancher Project Monitoirng into this repo.
+In other words, we will accomplish that by:
+- Creating a Rancher Project Monitoring specific Grafana under the new rebase,
+- Create our new Rancher Project Monitoring version copied from `0.3.4` but using rebase
+
+#### Creating a Rancher Project Monitoring specific Grafana under the new rebase
+To create the `project-monitoirng-grafana` we have a few minimal patches to apply on top of `rancher-grafana`.
+So we copy `project-monitoirng-grafana` from a previous release and then:
+1. Update the `pacakge.yaml` file's `url` field to the correct version,
+2. Disable exiting patches by renaming `patch` to `patch-off`,
+3. Do a make prepare on this new sub-package `PACKAGE=rancher-monitoring/66.7/project-monitoring-grafana make prepare`,
+4. Manually recreate the patching changes on prepared chart and run `make prepare`,
+5. Remove the `patch-off` directory
+
+After this, we have a grafana that we can use in Rancher Project Monitoring.
+
+#### Creating Rancher Project Monitoring
+To start, we copy `0.3.4` (the other package using this same method) into `0.5.0`.
+
+After this, simply edit `generated-changes/dependencies/grafana/dependency.yaml` to update the `url` to match the new package.
+In this case we updated to: `packages/rancher-monitoring/66.7/project-monitoring-grafana`.
+
+After this, because it's a local based package, you will need to run `PACKAGE=rancher-project-monitoring/0.5.0 make charts` to test.
+
+To test this new Rancher Project Monitoring you may need to use some clever tricks to update an existing installation of Rancher Project Monitoring (and disable PromFed).
+Or you can try other tricks to install it directly into a project similar to how Prom Fed would.
+Expanding on and documenting the process around testing this before PromFed will be explored further in the future.
+
+## Next Steps after rebase
+
+The next steps after a rebase are -ideally- to go update Prometheus Federator for the branch you're seeking to ship it on.
+Keep in mind, you will need to do this for each branch you're releasing Monitoring on.
+
+Only after you complete this should you work to move changes into `rancher/charts` on the target branch.
+This will ensure that we can update both Rancher Monitoring and Prometheus Federator at the same time.
+These steps are intentionally left out of this example documentation.
+If requested we can document them, however they are very consistent with existing practices before this repo.
