@@ -48,9 +48,9 @@ spec:
       containers:
         - name: {{ template "kube-prometheus-stack.name" . }}
           {{- $base_registry := (include "monitoring_registry" .) }}
-          {{- $configReloaderRegistry := $base_registry | default .Values.prometheusOperator.prometheusConfigReloader.image.registry -}}
-          {{- $operatorRegistry := $base_registry | default .Values.prometheusOperator.image.registry -}}
-          {{- $thanosRegistry := $base_registry | default .Values.prometheusOperator.thanosImage.registry -}}
+          {{- $configReloaderRegistry := .Values.prometheusOperator.prometheusConfigReloader.image.registry | default $base_registry -}}
+          {{- $operatorRegistry := .Values.prometheusOperator.image.registry | default $base_registry -}}
+          {{- $thanosRegistry := .Values.prometheusOperator.thanosImage.registry | default $base_registry -}}
           {{- if .Values.prometheusOperator.image.sha }}
           image: "{{ $operatorRegistry }}/{{ .Values.prometheusOperator.image.repository }}:{{ .Values.prometheusOperator.image.tag | default .Chart.AppVersion }}@sha256:{{ .Values.prometheusOperator.image.sha }}"
           {{- else }}
