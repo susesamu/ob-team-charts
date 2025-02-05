@@ -1,4 +1,4 @@
-TARGETS := $(shell ls scripts|grep -ve "^util-\|entry\|^pull-scripts")
+TARGETS := $(shell ls scripts|grep -ve "^util-\|^pull-scripts")
 
 # Default behavior for targets
 $(TARGETS):
