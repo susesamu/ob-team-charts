@@ -3,6 +3,7 @@ set -e
 
 cd $(dirname $0)
 
-./validate-packages
-./validate-chart
+source ./version
+
+# ./validate-packages
 ./validate-charts

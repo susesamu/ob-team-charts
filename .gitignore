@@ -21,3 +21,5 @@ Dockerfile.dapper*
 !Dockerfile.dapper
 /.debug
 debug.yaml
+.charts-build-scripts/.cache
+.charts-build-scripts/.cache/**
