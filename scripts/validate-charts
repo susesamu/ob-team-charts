@@ -5,5 +5,11 @@ cd $(dirname $0)/..
 
 echo Running general chart validation
 
+if [ -d ./.charts-build-scripts/.cache ]; then
+  echo "Due to a bug in the golang Git library, you must fully clean the repo first"
+  echo "Clearing out the charts build cache now..."
+  rm -rf ./.charts-build-scripts/.cache
+fi
+
 ./scripts/pull-scripts
 ./bin/charts-build-scripts validate --local
