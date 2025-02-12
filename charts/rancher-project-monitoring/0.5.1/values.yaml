@@ -72,8 +72,8 @@ global:
     projectNamespaceSelector: {}
     projectNamespaces: []
   kubectl:
-     repository: rancher/kubectl
-     tag: v1.20.2
+     repository: rancher/kuberlr-kubectl
+     tag: v4.0.1
      pullPolicy: IfNotPresent
      securityContext:
        runAsNonRoot: true
