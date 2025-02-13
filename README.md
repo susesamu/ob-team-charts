@@ -1,10 +1,13 @@
 # ob-team-charts
 A repo for Rancher Observability &amp; Backups team's charts - a canonical dev spot just before rancher/charts.
 
-## How does re-basing of Rancher Monitoring Charts work with this repo involved?
-For now, it doesn't yet - but when we're fully in flight this will be updated to reflect that.
-Today this repo is only used to benefit Prometheus Federator, but I hope to incorporate with our next Monitoring Rebase.
-Then after that we'll start to onboard logging charts as well.
+## How does rebasing for Rancher Monitoring charts work with this repo?
+For more info on monitoring rebase, see the (in progress) docs here:
+- [Example Monitoring Rebase](./docs/example-monitoring-rebase.md)
+- [Suggested Patch Resolution Workflow](./docs/dans-suggested-patch-resolution.md)
+
+## How does rebasing for Rancher Logging charts work with this repo?
+This chart has not yet been migrated into the teams new repo here.
 
 ---
 
@@ -29,8 +32,8 @@ That triggers updates to be necessary for all Rancher branches getting the rebas
   - Chart Image Bumps and Security Patches,
   - Rancher Specific Changes
 - Of those sets of change types, each may (or may not) have subsets of:
- - Specific Image Tags Needed to Match Upstream chart targets,
- - Rancher Version dependant changes
+  - Specific Image Tags Needed to Match Upstream chart targets,
+  - Rancher Version dependant changes
 
 These variables cause our team to repeat a lot of work, but just subtly different.
 However, the cognitive load of comparing similar, but different, patches for the same upstream charts on different branches can be taxing.
