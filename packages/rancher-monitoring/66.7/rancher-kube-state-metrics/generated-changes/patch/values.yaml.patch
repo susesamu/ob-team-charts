@@ -26,17 +26,18 @@
    # To help compatibility with other charts which use global.imagePullSecrets.
    # Allow either an array of {name: pullSecret} maps (k8s-style), or an array of strings (more common helm-style).
    # global:
-@@ -104,8 +108,7 @@
+@@ -104,8 +108,8 @@
  kubeRBACProxy:
    enabled: false
    image:
 -    registry: quay.io
 -    repository: brancz/kube-rbac-proxy
-+    repository: rancher/mirrored-kube-rbac-proxy
++    registry: ''
++    repository: rancher/mirrored-brancz-kube-rbac-proxy
      tag: v0.18.2
      sha: ""
      pullPolicy: IfNotPresent
-@@ -237,7 +240,6 @@
+@@ -237,7 +241,6 @@
  ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/
  ##
  podSecurityPolicy:
