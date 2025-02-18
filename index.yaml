@@ -533,6 +533,56 @@ entries:
     urls:
     - assets/prometheus-federator/prometheus-federator-0.0.1.tgz
     version: 0.0.1
+  rancher-logging:
+  - annotations:
+      catalog.cattle.io/auto-install: rancher-logging-crd=match
+      catalog.cattle.io/certified: rancher
+      catalog.cattle.io/deploys-on-os: windows
+      catalog.cattle.io/display-name: Logging
+      catalog.cattle.io/kube-version: '>= 1.28.0-0 < 1.32.0-0'
+      catalog.cattle.io/namespace: cattle-logging-system
+      catalog.cattle.io/permits-os: linux,windows
+      catalog.cattle.io/provides-gvr: logging.banzaicloud.io.clusterflow/v1beta1
+      catalog.cattle.io/rancher-version: '>= 2.10.0-0 < 2.11.0-0'
+      catalog.cattle.io/release-name: rancher-logging
+      catalog.cattle.io/type: cluster-tool
+      catalog.cattle.io/ui-component: logging
+      catalog.cattle.io/upstream-version: 4.10.0
+    apiVersion: v2
+    appVersion: 4.10.0
+    created: "2025-02-18T14:15:29.589321036-07:00"
+    description: Logging operator for Kubernetes based on Fluentd and Fluentbit.
+    digest: 396d3570f4cd3c19333e2ae1c28a371746818acec4e4fe9887e3ebd36f72c21d
+    home: https://kube-logging.github.io
+    icon: file://assets/logos/rancher-logging.svg
+    keywords:
+    - logging
+    - fluentd
+    - fluentbit
+    kubeVersion: '>=1.28.0-0'
+    name: rancher-logging
+    sources:
+    - https://github.com/kube-logging/logging-operator
+    - https://github.com/kube-logging/helm-charts/tree/main/charts/logging-operator
+    type: application
+    urls:
+    - assets/rancher-logging/rancher-logging-4.10.0-rancher.1.tgz
+    version: 4.10.0-rancher.1
+  rancher-logging-crd:
+  - annotations:
+      catalog.cattle.io/certified: rancher
+      catalog.cattle.io/hidden: "true"
+      catalog.cattle.io/namespace: cattle-logging-system
+      catalog.cattle.io/release-name: rancher-logging-crd
+    apiVersion: v1
+    created: "2025-02-18T13:58:51.106912958-07:00"
+    description: Installs the CRDs for rancher-logging.
+    digest: dab0a7ad82dbf03264843e6efb869c9293a0479abe6e10a5ee405983ade7fd38
+    name: rancher-logging-crd
+    type: application
+    urls:
+    - assets/rancher-logging-crd/rancher-logging-crd-4.10.0-rancher.1.tgz
+    version: 4.10.0-rancher.1
   rancher-monitoring:
   - annotations:
       artifacthub.io/license: Apache-2.0
