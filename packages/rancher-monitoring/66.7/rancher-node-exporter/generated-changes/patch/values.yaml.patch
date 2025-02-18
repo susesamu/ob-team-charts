@@ -35,8 +35,8 @@
 -    registry: quay.io
 -    repository: brancz/kube-rbac-proxy
 -    tag: v0.18.1
-+    registry: docker.io
-+    repository: rancher/mirrored-kube-rbac-proxy
++    registry: ''
++    repository: rancher/mirrored-brancz-kube-rbac-proxy
 +    tag: v0.18.2
      sha: ""
      pullPolicy: IfNotPresent
