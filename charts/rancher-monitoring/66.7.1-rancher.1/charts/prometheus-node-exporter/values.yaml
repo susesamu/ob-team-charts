@@ -49,8 +49,8 @@ kubeRBACProxy:
   env: {}
     # VARIABLE: value
   image:
-    registry: docker.io
-    repository: rancher/mirrored-kube-rbac-proxy
+    registry: ''
+    repository: rancher/mirrored-brancz-kube-rbac-proxy
     tag: v0.18.2
     sha: ""
     pullPolicy: IfNotPresent
