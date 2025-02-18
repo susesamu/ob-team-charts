@@ -51,7 +51,7 @@ kubeRBACProxy:
   image:
     registry: docker.io
     repository: rancher/mirrored-kube-rbac-proxy
-    tag: v0.18.1
+    tag: v0.18.2
     sha: ""
     pullPolicy: IfNotPresent
 
