@@ -10,15 +10,9 @@ bash ./pull-scripts
 # Move to the root of the project
 cd "$PROJECT_ROOT"
 
+
 if [[ -f ./bin/ob-charts-tool ]]; then
-  # Check if there's input from STDIN
-  if [ -t 0 ]; then
-      # No STDIN, pass all arguments to the command
-      exec ./bin/ob-charts-tool verifyChartImages "$@"
-  else
-      # Pass STDIN to the command
-      exec ./bin/ob-charts-tool verifyChartImages "$@" <&0
-  fi
+  exec ./bin/ob-charts-tool getRebaseInfo "$@"
 else
   echo "Your ob-charts-tool bin is missing..."
 fi
