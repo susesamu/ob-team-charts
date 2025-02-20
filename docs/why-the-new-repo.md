@@ -1,12 +1,29 @@
 # FAQs about the new repo
 
 ## What is this repository for compared to `rancher/charts`?
-This repository solves a unique set of problems that the O&B team has while maintaining our charts.
+This repo is the O&B teams primary source of truth for the Charts we maintain.
+Primarily it is focused on the charts we pull from 3rd party sources.
+But can also be used for internal produced charts from O&B team if it makes sense.
+
+## What issues does this repo solve compared to the existing `rancher/charts` repo and process?
+This repository solves a unique set of problems that the O&B team have while maintaining our charts Monitoring and Logging charts.
 At a high level, these problems are:
-- Repeated issues with Regressions caused by current rebase workflows,
+- Issues with Regressions caused by current rebase workflows,
 - Missed dependency bumps during current rebase causing usage of more image tags than necessary,
-    - In other words, we do a rebase and expect to remove CVEs, but they remain because some charts use old tags.
+  - In other words, we do a rebase and expect to remove CVEs, but they remain because some charts use old tags.
 - Varying patches based on Upstream Chart Version for Rancher Branch on `rancher/charts`
+
+## What factors make the current (or old) chart process for O&B complex?
+- We have 3 distinct types of changes that are made to `rancher/charts` by our team:
+  - Chart Rebase Work,
+  - Chart Image Bumps and Security Patches,
+  - Rancher Specific Changes
+- Of those sets of change types, each may (or may not) have subsets of:
+- Specific Image Tags Needed to Match Upstream chart targets,
+- Rancher Version dependant changes
+
+These variables cause our team to repeat a lot of work, but just subtly different.
+However, the cognitive load of comparing similar, but different, patches for the same upstream charts on different branches can be taxing.
 
 ## Why only `main` branch in this repo?
 The principal function of this repo is to reduce redundant work from processes used by the O&B team today.
@@ -15,25 +32,14 @@ The current process to maintain Monitoring and Logging -essentially- involve us 
 Instead, if we apply most of our Rancher specific changes in a Rancher version agnostic manner we can maintain important changes once.
 Then when the chart lands in a Minor version specific `rancher/charts` branch it can have Rancher minor specific patching applied.
 
-## Why move Prometheus Federator repo charts to the new repo and not part of `rancher/charts`?
-The charts in Prometheus Federator repo were: prometheus-federator, rancher-project-monitoring, and helm-project-operator.
+### What about `rancher/charts` auto-bumps?
+This workflow change isn't something considered as part of this repo's creation.
 
-Having these tied to `rancher/charts` would immediately require them being branch specific.
-Additionally, it would create a workflow dynamic where changes happen:
-1. In each branch of `rancher/chart` (3 times),
-2. Then, in each (future) branch of Prometheus Federator (3 times),
-3. Then again in each branch of `rancher/charts` (3 more times)
+However, the requirements of that new feature of `rancher/charts` isn't incompatible with our new repo.
+It will complicate it if we must adopt it, yet it's possible to do via using `main` as our source of truth, and pulling from it to produce Rancher Minor specific charts on release branches here.
+Likely we should start the new release branches from a single common orphaned branch
 
-All just to get new Rancher Project Monitoring inside of PromFed and updated on rancher/charts.
-
-## What factors make the current chart process for O&B complex?
-- We have 3 distinct types of changes that are made to `rancher/charts` by our team:
-    - Chart Rebase Work,
-    - Chart Image Bumps and Security Patches,
-    - Rancher Specific Changes
-- Of those sets of change types, each may (or may not) have subsets of:
-- Specific Image Tags Needed to Match Upstream chart targets,
-- Rancher Version dependant changes
-
-These variables cause our team to repeat a lot of work, but just subtly different.
-However, the cognitive load of comparing similar, but different, patches for the same upstream charts on different branches can be taxing.
+## Where does the chart for Helm Project Operator and Prometheus Federator live now?
+The chart for `helm-project-operator` that used to be a subchcart of Prometheus Federator was removed.
+It was primarily used for development testing and complicated the development of the chart for Prometheus Federator.
+So by removing it we simplified the Prometheus Federator chart, which now lives in the Prometheus Federator repo.
