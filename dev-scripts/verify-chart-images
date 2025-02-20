@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
 
-cd $(dirname $0) # Move to the directory of the script
+SCRIPT_PATH=$(realpath "${BASH_SOURCE[0]}")
+PROJECT_ROOT=$(git rev-parse --show-toplevel)
+
+cd $(dirname "$SCRIPT_PATH") # Move to the directory of the script
 
 bash ./pull-scripts
 
-if [[ -f ../bin/ob-charts-tool ]]; then
+# Move to the root of the project
+cd "$PROJECT_ROOT"
+
+if [[ -f ./bin/ob-charts-tool ]]; then
   # Check if there's input from STDIN
   if [ -t 0 ]; then
       # No STDIN, pass all arguments to the command
-      exec ../bin/ob-charts-tool verifyChartImages "$@"
+      exec ./bin/ob-charts-tool verifyChartImages "$@"
   else
       # Pass STDIN to the command
-      exec ../bin/ob-charts-tool verifyChartImages "$@" <&0
+      exec ./bin/ob-charts-tool verifyChartImages "$@" <&0
   fi
 else
   echo "Your ob-charts-tool bin is missing..."
