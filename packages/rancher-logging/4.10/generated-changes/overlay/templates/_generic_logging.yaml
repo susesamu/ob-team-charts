@@ -37,6 +37,9 @@ spec:
     {{- with (default .Values.tolerations .Values.fluentd.tolerations) }}
     tolerations: {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- with (default .Values.priorityClassName .Values.fluentd.podPriorityClassName) }}
+    podPriorityClassName: {{ . }}
+    {{- end }}
     {{- with (default .Values.nodeSelector .Values.fluentd.nodeSelector) }}
     nodeSelector: {{- toYaml . | nindent 6 }}
     {{- end }}
