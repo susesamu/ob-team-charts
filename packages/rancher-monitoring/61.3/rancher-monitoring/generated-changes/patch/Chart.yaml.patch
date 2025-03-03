@@ -18,7 +18,7 @@
 +  catalog.cattle.io/requests-memory: 4000Mi
 +  catalog.cattle.io/type: cluster-tool
 +  catalog.cattle.io/ui-component: monitoring
-+  catalog.cattle.io/upstream-version: 57.0.3
++  catalog.cattle.io/upstream-version: 61.3.2
  apiVersion: v2
  appVersion: v0.75.1
  dependencies:
