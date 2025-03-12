@@ -3,7 +3,7 @@ set -e # Exit immediately if a command exits with a non-zero status.
 
 cd $(dirname $0) # Move to the directory of the script
 
-OB_TEAM_SCRIPTS_REPO=https://github.com/mallardduck/ob-charts-tool.git
+OB_TEAM_SCRIPTS_REPO=https://github.com/rancher/ob-charts-tool.git
 OB_TEAM_SCRIPT_VERSION="${OB_TEAM_SCRIPT_VERSION:-v0.0.9}"
 
 
