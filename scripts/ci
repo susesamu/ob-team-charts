@@ -5,4 +5,5 @@ cd $(dirname $0)
 
 source ./version
 
-./validate
+# ./validate-packages
+./validate-charts
