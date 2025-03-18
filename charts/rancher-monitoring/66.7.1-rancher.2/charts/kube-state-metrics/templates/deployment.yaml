@@ -301,12 +301,12 @@ spec:
       affinity:
 {{ toYaml .Values.affinity | indent 8 }}
       {{- end }}
-      {{- with .Values.nodeSelector }}
       nodeSelector: {{ include "linux-node-selector" . | nindent 8 }}
+      {{- with .Values.nodeSelector }}
 {{ tpl (toYaml .) $ | indent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
       tolerations: {{ include "linux-node-tolerations" . | nindent 8 }}
+      {{- with .Values.tolerations }}
 {{ tpl (toYaml .) $ | indent 8 }}
       {{- end }}
       {{- if .Values.topologySpreadConstraints }}
