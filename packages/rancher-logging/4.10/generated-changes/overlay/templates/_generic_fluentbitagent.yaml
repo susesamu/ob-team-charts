@@ -17,14 +17,8 @@ spec:
   bufferStorageVolume: {{- toYaml . | nindent 6 }}
   {{- end }}
   {{- end }}
-  {{- if or .Values.global.cattle.psp.enabled .Values.global.seLinux.enabled }}
-  security:
-  {{- end }}
-  {{- if .Values.global.cattle.psp.enabled }}
-    podSecurityPolicyCreate: true
-    roleBasedAccessControlCreate: true
-  {{- end }}
   {{- if .Values.global.seLinux.enabled }}
+  security:
     securityContext:
       seLinuxOptions:
         type: rke_logreader_t

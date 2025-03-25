@@ -25,12 +25,6 @@ spec:
     scaling:
       replicas: {{ .Values.fluentd.replicas }}
     {{- end }}
-    security:
-      podSecurityContext:
-    {{- if .Values.global.cattle.psp.enabled }}
-      podSecurityPolicyCreate: true
-      roleBasedAccessControlCreate: true
-    {{- end }}
     {{- with .Values.fluentd.env }}
     envVars: {{- toYaml . | nindent 6 }}
     {{- end }}
