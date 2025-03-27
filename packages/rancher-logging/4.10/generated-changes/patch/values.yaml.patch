@@ -36,7 +36,7 @@
        # -- storage class for event tailer pvc
        accessModes:
          - ReadWriteOnce
-@@ -309,14 +304,178 @@
+@@ -309,14 +304,176 @@
    image: fluent/fluent-bit
    pullPolicy: IfNotPresent
    port: 8080
@@ -109,8 +109,6 @@
 +    # set the value below to "false".
 +    # windows:
 +    #   enabled: true
-+    psp:
-+      enabled: false
 +
 +  # Change the "dockerRootDirectory" if the default Docker directory has changed.
 +  dockerRootDirectory: ""
@@ -223,7 +221,7 @@
  
  # -- Extra manifests to deploy as an array
  extraManifests: []
-@@ -327,3 +486,12 @@
+@@ -327,3 +484,12 @@
    #     name: extra-manifest
    #   data:
    #     extra-data: "value"
