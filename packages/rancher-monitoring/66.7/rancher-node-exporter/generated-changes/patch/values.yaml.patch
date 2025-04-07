@@ -57,7 +57,7 @@
    ## Name of the service port. Sets the port name of the main container (NE) as well.
    portName: metrics
    ## Port number for service type NodePort
-@@ -365,9 +371,6 @@
+@@ -369,9 +375,6 @@
    ## If true, create & use RBAC resources
    ##
    create: true
@@ -67,7 +67,7 @@
    pspAnnotations: {}
  
  # for deployments that have node_exporter deployed outside of the cluster, list
-@@ -456,6 +459,8 @@
+@@ -460,6 +463,8 @@
  tolerations:
    - effect: NoSchedule
      operator: Exists

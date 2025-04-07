@@ -1,6 +1,6 @@
 --- charts-original/templates/servicemonitor.yaml
 +++ charts/templates/servicemonitor.yaml
-@@ -53,9 +53,19 @@
+@@ -57,9 +57,19 @@
        {{- with .Values.prometheus.monitor.relabelings }}
        relabelings:
          {{- toYaml . | nindent 8 }}
