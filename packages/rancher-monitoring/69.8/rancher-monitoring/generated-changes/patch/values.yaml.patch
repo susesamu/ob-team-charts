@@ -640,7 +640,28 @@
  
  ## Provide a k8s version to auto dashboard import script example: kubeTargetVersionOverride: 1.26.6
  ##
-@@ -326,13 +950,39 @@
+@@ -41,16 +665,12 @@
+     forceConflicts: false
+     image:
+       busybox:
+-        registry: docker.io
+-        repository: busybox
+-        tag: "latest"
+-        sha: ""
++        repository: rancher/mirrored-library-busybox
++        tag: 1.37.0
+         pullPolicy: IfNotPresent
+       kubectl:
+-        registry: registry.k8s.io
+-        repository: kubectl
+-        tag: ""  # defaults to the Kubernetes version
+-        sha: ""
++        repository: rancher/kuberlr-kubectl
++        tag: v4.0.2
+         pullPolicy: IfNotPresent
+ 
+     env: {}
+@@ -326,13 +946,39 @@
  
  ##
  global:
@@ -681,7 +702,7 @@
      pspAnnotations: {}
        ## Specify pod annotations
        ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#apparmor
-@@ -345,7 +995,7 @@
+@@ -345,7 +991,7 @@
  
    ## Global image registry to use if it needs to be overriden for some specific use cases (e.g local registries, custom images, ...)
    ##
@@ -690,7 +711,7 @@
  
    ## Reference to one or more secrets to be used when pulling images
    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-@@ -359,6 +1009,13 @@
+@@ -359,6 +1005,13 @@
    ## Deploys the windows-exporter and Windows-specific dashboards and rules (job name must be 'windows-exporter')
    enabled: false
  
@@ -704,7 +725,7 @@
  ## Configuration for prometheus-windows-exporter
  ## ref: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-windows-exporter
  ##
-@@ -568,25 +1225,76 @@
+@@ -568,25 +1221,76 @@
    ## ref: https://prometheus.io/docs/alerting/notifications/
    ##      https://prometheus.io/docs/alerting/notification_examples/
    ##
@@ -800,7 +821,7 @@
  
    ingress:
      enabled: false
-@@ -673,6 +1381,9 @@
+@@ -673,6 +1377,9 @@
    secret:
      annotations: {}
  
@@ -810,7 +831,7 @@
    ## Configuration for creating an Ingress that will map to each Alertmanager replica service
    ## alertmanager.servicePerReplica must be enabled
    ##
-@@ -908,8 +1619,7 @@
+@@ -908,8 +1615,7 @@
      ## Image of Alertmanager
      ##
      image:
@@ -820,7 +841,7 @@
        tag: v0.28.1
        sha: ""
  
-@@ -1050,9 +1760,13 @@
+@@ -1050,9 +1756,13 @@
      ## Define resources requests and limits for single Pods.
      ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
      ##
@@ -837,7 +858,7 @@
  
      ## Pod anti-affinity can prevent the scheduler from placing Prometheus replicas on the same node.
      ## The default value "soft" means that the scheduler should *prefer* to not schedule two replica pods onto the same node but no guarantee is provided.
-@@ -1211,6 +1925,30 @@
+@@ -1211,6 +1921,30 @@
    enabled: true
    namespaceOverride: ""
  
@@ -868,7 +889,7 @@
    ## ForceDeployDatasources Create datasource configmap even if grafana deployment has been disabled
    ##
    forceDeployDatasources: false
-@@ -1223,6 +1961,18 @@
+@@ -1223,6 +1957,18 @@
    ##
    defaultDashboardsEnabled: true
  
@@ -887,7 +908,7 @@
    ## Timezone for the default dashboards
    ## Other options are: browser or a specific timezone, i.e. Europe/Luxembourg
    ##
-@@ -1302,9 +2052,8 @@
+@@ -1302,9 +2048,8 @@
      dashboards:
        enabled: true
        label: grafana_dashboard
@@ -898,7 +919,7 @@
  
        # Support for new table panels, when enabled grafana auto migrates the old table panels to newer table panels
        enableNewTablePanelSyntax: false
-@@ -1400,10 +2149,66 @@
+@@ -1400,10 +2145,66 @@
    ## Passed to grafana subchart and used by servicemonitor below
    ##
    service:
@@ -966,7 +987,7 @@
    serviceMonitor:
      # If true, a ServiceMonitor CRD is created for a prometheus operator
      # https://github.com/coreos/prometheus-operator
-@@ -1437,6 +2242,17 @@
+@@ -1437,6 +2238,17 @@
      #   replacement: $1
      #   action: replace
  
@@ -984,7 +1005,7 @@
  ## Flag to disable all the kubernetes component scrapers
  ##
  kubernetesServiceMonitors:
-@@ -1491,7 +2307,7 @@
+@@ -1491,7 +2303,7 @@
      metricRelabelings:
        # Drop excessively noisy apiserver buckets.
        - action: drop
@@ -993,7 +1014,7 @@
          sourceLabels:
            - __name__
            - le
-@@ -1765,7 +2581,7 @@
+@@ -1765,7 +2577,7 @@
  ## Component scraping the kube controller manager
  ##
  kubeControllerManager:
@@ -1002,7 +1023,7 @@
  
    ## If your kube controller manager is not deployed as a pod, specify IPs it can be found on
    ##
-@@ -1877,7 +2693,6 @@
+@@ -1877,7 +2689,6 @@
      enabled: true
      port: 9153
      targetPort: 9153
@@ -1010,7 +1031,7 @@
      ipDualStack:
        enabled: false
        ipFamilies: ["IPv6", "IPv4"]
-@@ -2052,7 +2867,7 @@
+@@ -2052,7 +2863,7 @@
  ## Component scraping etcd
  ##
  kubeEtcd:
@@ -1019,7 +1040,7 @@
  
    ## If your etcd is not deployed as a pod, specify IPs it can be found on
    ##
-@@ -2161,7 +2976,7 @@
+@@ -2161,7 +2972,7 @@
  ## Component scraping kube scheduler
  ##
  kubeScheduler:
@@ -1028,7 +1049,7 @@
  
    ## If your kube scheduler is not deployed as a pod, specify IPs it can be found on
    ##
-@@ -2267,7 +3082,7 @@
+@@ -2267,7 +3078,7 @@
  ## Component scraping kube proxy
  ##
  kubeProxy:
@@ -1037,7 +1058,7 @@
  
    ## If your kube proxy is not deployed as a pod, specify IPs it can be found on
    ##
-@@ -2731,10 +3546,9 @@
+@@ -2731,10 +3542,9 @@
        ## Prometheus-operator webhook image
        ##
        image:
@@ -1050,7 +1071,7 @@
          sha: ""
          pullPolicy: IfNotPresent
  
-@@ -2843,9 +3657,8 @@
+@@ -2843,9 +3653,8 @@
      patch:
        enabled: true
        image:
@@ -1062,7 +1083,7 @@
          sha: ""
          pullPolicy: IfNotPresent
        resources: {}
-@@ -3225,10 +4038,8 @@
+@@ -3225,10 +4034,8 @@
    ## Prometheus-operator image
    ##
    image:
@@ -1075,7 +1096,7 @@
      sha: ""
      pullPolicy: IfNotPresent
  
-@@ -3252,10 +4063,8 @@
+@@ -3252,10 +4059,8 @@
    ##
    prometheusConfigReloader:
      image:
@@ -1088,7 +1109,7 @@
        sha: ""
  
      # add prometheus config reloader liveness and readiness probe. Default: false
-@@ -3273,10 +4082,8 @@
+@@ -3273,10 +4078,8 @@
    ## Thanos side-car image when configured
    ##
    thanosImage:
@@ -1100,7 +1121,7 @@
  
    ## Set a Label Selector to filter watched prometheus and prometheusAgent
    ##
-@@ -3469,7 +4276,7 @@
+@@ -3469,7 +4272,7 @@
      port: 9090
  
      ## To be used with a proxy extraContainer port
@@ -1109,7 +1130,7 @@
  
      ## Port for Prometheus Reloader to listen on
      ##
-@@ -3859,11 +4666,11 @@
+@@ -3859,11 +4662,11 @@
      ## Defaults to 30s.
      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/release-0.44/pkg/prometheus/promcfg.go#L180-L183
      ##
@@ -1123,7 +1144,7 @@
  
      ## List of scrape classes to expose to scraping objects such as
      ## PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.
-@@ -3877,7 +4684,7 @@
+@@ -3877,7 +4680,7 @@
  
      ## Interval between consecutive evaluations.
      ##
@@ -1132,7 +1153,7 @@
  
      ## ListenLocal makes the Prometheus server listen on loopback, so that it does not bind against the Pod IP.
      ##
-@@ -3913,10 +4720,8 @@
+@@ -3913,10 +4716,8 @@
      ## Image of Prometheus.
      ##
      image:
@@ -1144,7 +1165,7 @@
  
      ## Tolerations for use with node taints
      ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-@@ -4014,7 +4819,7 @@
+@@ -4014,7 +4815,7 @@
      ## prometheus resource to be created with selectors based on values in the helm deployment,
      ## which will also match the PrometheusRule resources created
      ##
@@ -1153,7 +1174,7 @@
  
      ## PrometheusRules to be selected for target discovery.
      ## If {}, select all PrometheusRules
-@@ -4039,7 +4844,7 @@
+@@ -4039,7 +4840,7 @@
      ## prometheus resource to be created with selectors based on values in the helm deployment,
      ## which will also match the servicemonitors created
      ##
@@ -1162,7 +1183,7 @@
  
      ## ServiceMonitors to be selected for target discovery.
      ## If {}, select all ServiceMonitors
-@@ -4062,7 +4867,7 @@
+@@ -4062,7 +4863,7 @@
      ## prometheus resource to be created with selectors based on values in the helm deployment,
      ## which will also match the podmonitors created
      ##
@@ -1171,7 +1192,7 @@
  
      ## PodMonitors to be selected for target discovery.
      ## If {}, select all PodMonitors
-@@ -4228,9 +5033,13 @@
+@@ -4228,9 +5029,13 @@
  
      ## Resource limits & requests
      ##
@@ -1188,7 +1209,7 @@
  
      ## Prometheus StorageSpec for persistent data
      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/platform/storage.md
-@@ -4253,7 +5062,13 @@
+@@ -4253,7 +5058,13 @@
      #    medium: Memory
  
      # Additional volumes on the output StatefulSet definition.
@@ -1203,7 +1224,7 @@
  
      # Additional VolumeMounts on the output StatefulSet definition.
      volumeMounts: []
-@@ -4417,25 +5232,34 @@
+@@ -4417,25 +5228,34 @@
        #     #   access_key: ""
        #     #   secret_key: ""
  
@@ -1255,7 +1276,7 @@
  
      ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
      ## (permissions, dir tree) on mounted volumes before starting prometheus
-@@ -4988,10 +5812,8 @@
+@@ -4988,10 +5808,8 @@
      ## Image of ThanosRuler
      ##
      image:
@@ -1267,7 +1288,7 @@
  
      ## Namespaces to be selected for PrometheusRules discovery.
      ## If nil, select own namespace. Namespaces to be selected for ServiceMonitor discovery.
-@@ -5087,10 +5909,6 @@
+@@ -5087,10 +5905,6 @@
      ##
      externalPrefix:
  
