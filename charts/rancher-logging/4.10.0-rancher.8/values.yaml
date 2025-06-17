@@ -99,6 +99,10 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+# -- Operator Deployment and rke/rke2/k3s additionalResources dnsConfig
+dnsConfig: {}
+
+# -- Node NodeSelectors
 nodeSelector: {}
 
 # -- Node Tolerations
