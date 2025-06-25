@@ -22,6 +22,13 @@ And that this version is universal across all Rancher minor versions that suppor
 
 For more specifics on why this format is used, see: [How do we manage Chart versions across this repo and `rancher/charts`?](./docs/semver-across-chart-repos.md)
 
+## How are PRs merged into this repo?
+Due to how we manage the version numbers here, read the section above for detail, we must ensure that we only merge PRs after charts are valdiated. This means that PRs must have both: approving review from O&B team, and a validation comment on the PR or issue from O&B QA team.
+
+This way every version published to main is a "safe version" - meaning while they may still have bugs, none should have critical flaws. This gives us greater confidence to ship multiple changes to `rancher/charts` at one time (when we release) - as all changes were tested at least once before that.
+
+For more on what details to provide QA for testing, see: [How to test charts straight from ob-team-charts](./docs/testing-from-ob-team-charts.md).
+
 ## How does rebasing for Rancher Monitoring charts work with this repo?
 Overall the process isn't too different, however how we manage a particular upstream version will be different.
 In the new system, we will suffix each upstream version with a `-rancher.{num}` identifier.
