@@ -42,9 +42,8 @@ spec:
       for: 10m
       labels:
         severity: critical
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusNotificationQueueRunningFull | default false) }}
     - alert: PrometheusNotificationQueueRunningFull
@@ -66,9 +65,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusErrorSendingAlertsToSomeAlertmanagers | default false) }}
     - alert: PrometheusErrorSendingAlertsToSomeAlertmanagers
@@ -90,9 +88,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusNotConnectedToAlertmanagers | default false) }}
     - alert: PrometheusNotConnectedToAlertmanagers
@@ -110,9 +107,8 @@ spec:
       for: 10m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusTSDBReloadsFailing | default false) }}
     - alert: PrometheusTSDBReloadsFailing
@@ -127,9 +123,8 @@ spec:
       for: 4h
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusTSDBCompactionsFailing | default false) }}
     - alert: PrometheusTSDBCompactionsFailing
@@ -144,9 +139,8 @@ spec:
       for: 4h
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusNotIngestingSamples | default false) }}
     - alert: PrometheusNotIngestingSamples
@@ -170,9 +164,8 @@ spec:
       for: 10m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusDuplicateTimestamps | default false) }}
     - alert: PrometheusDuplicateTimestamps
@@ -187,9 +180,8 @@ spec:
       for: 10m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusOutOfOrderTimestamps | default false) }}
     - alert: PrometheusOutOfOrderTimestamps
@@ -204,9 +196,8 @@ spec:
       for: 10m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusRemoteStorageFailures | default false) }}
     - alert: PrometheusRemoteStorageFailures
@@ -232,9 +223,8 @@ spec:
       for: 15m
       labels:
         severity: critical
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusRemoteWriteBehind | default false) }}
     - alert: PrometheusRemoteWriteBehind
@@ -257,9 +247,8 @@ spec:
       for: 15m
       labels:
         severity: critical
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusRemoteWriteDesiredShards | default false) }}
     - alert: PrometheusRemoteWriteDesiredShards
@@ -281,9 +270,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusRuleFailures | default false) }}
     - alert: PrometheusRuleFailures
@@ -298,9 +286,8 @@ spec:
       for: 15m
       labels:
         severity: critical
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusMissingRuleEvaluations | default false) }}
     - alert: PrometheusMissingRuleEvaluations
@@ -315,9 +302,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusTargetLimitHit | default false) }}
     - alert: PrometheusTargetLimitHit
@@ -332,9 +318,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusLabelLimitHit | default false) }}
     - alert: PrometheusLabelLimitHit
@@ -349,9 +334,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusScrapeBodySizeLimitHit | default false) }}
     - alert: PrometheusScrapeBodySizeLimitHit
@@ -366,9 +350,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusScrapeSampleLimitHit | default false) }}
     - alert: PrometheusScrapeSampleLimitHit
@@ -383,9 +366,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusTargetSyncFailure | default false) }}
     - alert: PrometheusTargetSyncFailure
@@ -400,9 +382,8 @@ spec:
       for: 5m
       labels:
         severity: critical
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusHighQueryLoad | default false) }}
     - alert: PrometheusHighQueryLoad
@@ -417,9 +398,8 @@ spec:
       for: 15m
       labels:
         severity: warning
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- if not (.Values.defaultRules.disabled.PrometheusErrorSendingAlertsToAnyAlertmanager | default false) }}
     - alert: PrometheusErrorSendingAlertsToAnyAlertmanager
@@ -441,8 +421,7 @@ spec:
       for: 15m
       labels:
         severity: critical
-{{- if .Values.defaultRules.additionalRuleLabels }}
-{{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
-{{- end }}
+{{ include "rules.additionalLabels" . }}
+{{ include "rules.clusterIdLabel" .  | nindent 8}}
 {{- end }}
 {{- end }}

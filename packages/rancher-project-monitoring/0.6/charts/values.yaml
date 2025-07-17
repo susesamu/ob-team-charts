@@ -57,6 +57,9 @@ defaultRules:
   ## Additional annotations for PrometheusRule alerts
   additionalRuleAnnotations: {}
 
+  ## Add cluster_id label to PrometheusRule alerts
+  clusterIdLabel: true
+
   ## Prefix for runbook URLs. Use this to override the first part of the runbookURLs that is common to all rules.
   runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
 
