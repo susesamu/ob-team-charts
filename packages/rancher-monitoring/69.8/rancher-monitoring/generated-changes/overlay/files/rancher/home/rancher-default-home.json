@@ -41,7 +41,40 @@
       "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 65
+              },
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "value": 90
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -108,7 +141,7 @@
       ],
       "thresholds": "65, 90",
       "title": "CPU Utilization",
-      "type": "singlestat",
+      "type": "gauge",
       "valueFontSize": "80%",
       "valueMaps": [
         {
@@ -133,7 +166,40 @@
       "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 65
+              },
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "value": 90
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -200,7 +266,7 @@
       ],
       "thresholds": "65, 90",
       "title": "Memory Utilization",
-      "type": "singlestat",
+      "type": "gauge",
       "valueFontSize": "80%",
       "valueMaps": [
         {
@@ -226,7 +292,40 @@
       "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgba(50, 172, 45, 0.97)",
+                "value": null
+              },
+              {
+                "color": "rgba(237, 129, 40, 0.89)",
+                "value": 65
+              },
+              {
+                "color": "rgba(245, 54, 54, 0.9)",
+                "value": 90
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -294,7 +393,7 @@
       ],
       "thresholds": "65, 90",
       "title": "Disk Utilization",
-      "type": "singlestat",
+      "type": "gauge",
       "valueFontSize": "80%",
       "valueMaps": [
         {
