@@ -1121,7 +1121,16 @@
  
    ## Set a Label Selector to filter watched prometheus and prometheusAgent
    ##
-@@ -3469,7 +4272,7 @@
+@@ -3309,6 +4112,8 @@
+ ##
+ prometheus:
+   enabled: true
++  # disables the discovery and collection of metrics provided by PodMonitor, Probe and ServiceMonitor CRs
++  disableServiceDiscovery: false
+ 
+   ## Toggle prometheus into agent mode
+   ## Note many of features described below (e.g. rules, query, alerting, remote read, thanos) will not work in agent mode.
+@@ -3469,7 +4274,7 @@
      port: 9090
  
      ## To be used with a proxy extraContainer port
@@ -1130,7 +1139,7 @@
  
      ## Port for Prometheus Reloader to listen on
      ##
-@@ -3859,11 +4662,11 @@
+@@ -3859,11 +4664,11 @@
      ## Defaults to 30s.
      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/release-0.44/pkg/prometheus/promcfg.go#L180-L183
      ##
@@ -1144,7 +1153,7 @@
  
      ## List of scrape classes to expose to scraping objects such as
      ## PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.
-@@ -3877,7 +4680,7 @@
+@@ -3877,7 +4682,7 @@
  
      ## Interval between consecutive evaluations.
      ##
@@ -1153,7 +1162,7 @@
  
      ## ListenLocal makes the Prometheus server listen on loopback, so that it does not bind against the Pod IP.
      ##
-@@ -3913,10 +4716,8 @@
+@@ -3913,10 +4718,8 @@
      ## Image of Prometheus.
      ##
      image:
@@ -1165,7 +1174,7 @@
  
      ## Tolerations for use with node taints
      ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-@@ -4014,7 +4815,7 @@
+@@ -4014,7 +4817,7 @@
      ## prometheus resource to be created with selectors based on values in the helm deployment,
      ## which will also match the PrometheusRule resources created
      ##
@@ -1174,7 +1183,7 @@
  
      ## PrometheusRules to be selected for target discovery.
      ## If {}, select all PrometheusRules
-@@ -4039,7 +4840,7 @@
+@@ -4039,7 +4842,7 @@
      ## prometheus resource to be created with selectors based on values in the helm deployment,
      ## which will also match the servicemonitors created
      ##
@@ -1183,7 +1192,7 @@
  
      ## ServiceMonitors to be selected for target discovery.
      ## If {}, select all ServiceMonitors
-@@ -4062,7 +4863,7 @@
+@@ -4062,7 +4865,7 @@
      ## prometheus resource to be created with selectors based on values in the helm deployment,
      ## which will also match the podmonitors created
      ##
@@ -1192,7 +1201,7 @@
  
      ## PodMonitors to be selected for target discovery.
      ## If {}, select all PodMonitors
-@@ -4228,9 +5029,13 @@
+@@ -4228,9 +5031,13 @@
  
      ## Resource limits & requests
      ##
@@ -1209,7 +1218,7 @@
  
      ## Prometheus StorageSpec for persistent data
      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/platform/storage.md
-@@ -4253,7 +5058,13 @@
+@@ -4253,7 +5060,13 @@
      #    medium: Memory
  
      # Additional volumes on the output StatefulSet definition.
@@ -1224,7 +1233,7 @@
  
      # Additional VolumeMounts on the output StatefulSet definition.
      volumeMounts: []
-@@ -4417,25 +5228,34 @@
+@@ -4417,25 +5230,34 @@
        #     #   access_key: ""
        #     #   secret_key: ""
  
@@ -1276,7 +1285,7 @@
  
      ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
      ## (permissions, dir tree) on mounted volumes before starting prometheus
-@@ -4988,10 +5808,8 @@
+@@ -4988,10 +5810,8 @@
      ## Image of ThanosRuler
      ##
      image:
@@ -1288,7 +1297,7 @@
  
      ## Namespaces to be selected for PrometheusRules discovery.
      ## If nil, select own namespace. Namespaces to be selected for ServiceMonitor discovery.
-@@ -5087,10 +5905,6 @@
+@@ -5087,10 +5907,6 @@
      ##
      externalPrefix:
  
