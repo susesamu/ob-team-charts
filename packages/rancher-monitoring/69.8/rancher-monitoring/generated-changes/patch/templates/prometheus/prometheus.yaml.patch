@@ -24,7 +24,40 @@
  {{ toYaml .Values.prometheus.prometheusSpec.nodeSelector | indent 4 }}
  {{- end }}
    paused: {{ .Values.prometheus.prometheusSpec.paused }}
-@@ -308,8 +310,8 @@
+@@ -163,7 +165,9 @@
+ {{ tpl (toYaml .Values.prometheus.prometheusSpec.configMaps) . | indent 4 }}
+ {{- end }}
+   serviceAccountName: {{ template "kube-prometheus-stack.prometheus.serviceAccountName" . }}
+-{{- if .Values.prometheus.prometheusSpec.serviceMonitorSelector }}
++{{- if.Values.prometheus.disableServiceDiscovery }}
++  serviceMonitorSelect : null
++{{- else if .Values.prometheus.prometheusSpec.serviceMonitorSelector }}
+   serviceMonitorSelector:
+ {{ tpl (toYaml .Values.prometheus.prometheusSpec.serviceMonitorSelector | indent 4) . }}
+ {{ else if .Values.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues  }}
+@@ -179,7 +183,9 @@
+ {{ else }}
+   serviceMonitorNamespaceSelector: {}
+ {{- end }}
+-{{- if .Values.prometheus.prometheusSpec.podMonitorSelector }}
++{{- if .Values.prometheus.disableServiceDiscovery }}
++  podMonitorSelector : null
++{{- else if .Values.prometheus.prometheusSpec.podMonitorSelector }}
+   podMonitorSelector:
+ {{ tpl (toYaml .Values.prometheus.prometheusSpec.podMonitorSelector | indent 4) . }}
+ {{ else if .Values.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues  }}
+@@ -195,7 +201,9 @@
+ {{ else }}
+   podMonitorNamespaceSelector: {}
+ {{- end }}
+-{{- if .Values.prometheus.prometheusSpec.probeSelector }}
++{{- if .Values.prometheus.disableServiceDiscovery }}
++  probeSelector : null
++{{- else if .Values.prometheus.prometheusSpec.probeSelector }}
+   probeSelector:
+ {{ tpl (toYaml .Values.prometheus.prometheusSpec.probeSelector | indent 4) . }}
+ {{ else if .Values.prometheus.prometheusSpec.probeSelectorNilUsesHelmValues  }}
+@@ -308,8 +316,8 @@
                - {key: prometheus, operator: In, values: [{{ template "kube-prometheus-stack.prometheus.crname" . }}]}
  {{- end }}
  {{- end }}
@@ -34,7 +67,7 @@
  {{ toYaml .Values.prometheus.prometheusSpec.tolerations | indent 4 }}
  {{- end }}
  {{- if .Values.prometheus.prometheusSpec.topologySpreadConstraints }}
-@@ -358,7 +360,7 @@
+@@ -358,7 +366,7 @@
  {{- end }}
  {{- if .Values.prometheus.prometheusSpec.containers }}
    containers:
