@@ -89,7 +89,7 @@
 -    repository: kiwigrid/k8s-sidecar
 -    tag: 1.30.0
 +    repository: rancher/appco-k8s-sidecar
-+    tag: 1.30.7
++    tag: 1.30.7-11.3
      sha: ""
    imagePullPolicy: IfNotPresent
    resources: {}
