@@ -55,13 +55,11 @@ spec:
     {{- end }}
   {{- end }}
   fluentd:
-    {{- if .Values.loggingServiceAccountAnnotations.root }}
+    {{- with .Values.loggingServiceAccountAnnotations.root }}
     serviceAccount:
       metadata:
         annotations:
-        {{- with .Values.loggingServiceAccountAnnotations.root }}
         {{ toYaml . | indent 8 }}
-        {{- end }}
     {{- end -}}
 {{- end -}}
 {{- include "logging-operator.logging" (list . "logging-operator.logging.root") -}}

@@ -1,0 +1,11 @@
+--- charts-original/templates/service_monitor.yaml
++++ charts/templates/service_monitor.yaml
+@@ -22,7 +22,7 @@
+     {{- end }}
+     {{- with .Values.monitoring.serviceMonitor.relabelings }}
+     relabelings:
+-      {{- toYaml . | nindent 4 }}
++      {{- toYaml . | nindent 6 }}
+     {{- end }}
+   namespaceSelector:
+     matchNames:
