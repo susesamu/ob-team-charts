@@ -7,6 +7,9 @@ metadata:
 {{ include "logging-operator.labels" . | indent 4 }}
 spec:
   controlNamespace: {{ .Release.Namespace }}
+  {{- with .Values.logging.configCheck }}
+  configCheck: {{- toYaml . | nindent 4 }}
+  {{- end }}
   fluentd:
     {{- with .Values.fluentd.logLevel }}
     logLevel: {{ . }}
