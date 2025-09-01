@@ -56,7 +56,7 @@
        # -- storage class for event tailer pvc
        accessModes:
          - ReadWriteOnce
-@@ -309,14 +310,164 @@
+@@ -309,14 +310,171 @@
    image: fluent/fluent-bit
    pullPolicy: IfNotPresent
    port: 8080
@@ -162,19 +162,25 @@
 +    fluentbit:
 +      log_level: "info"
 +      mem_buffer_limit: "5MB"
++    loggingOverlay: {}
 +  rke2:
 +    enabled: false
 +    stripUnderscores: false
++    loggingOverlay: {}
 +  k3s:
 +    enabled: false
 +    container_engine: "systemd"
 +    stripUnderscores: false
++    loggingOverlay: {}
 +  aks:
 +    enabled: false
++    loggingOverlay: {}
 +  eks:
 +    enabled: false
++    loggingOverlay: {}
 +  gke:
 +    enabled: false
++    loggingOverlay: {}
 +  kubeAudit:
 +    auditFilename: ""
 +    enabled: false
@@ -182,6 +188,7 @@
 +    fluentbit:
 +      logTag: kube-audit
 +      tolerations: []
++    loggingOverlay: {}
 +
 +# configures node agent options for windows node agents
 +nodeAgents:
@@ -229,7 +236,7 @@
  
  # -- Extra manifests to deploy as an array
  extraManifests: []
-@@ -327,3 +478,12 @@
+@@ -327,3 +485,12 @@
    #     name: extra-manifest
    #   data:
    #     extra-data: "value"
