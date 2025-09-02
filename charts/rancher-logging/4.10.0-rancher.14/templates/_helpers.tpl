@@ -254,24 +254,9 @@ resources: {{ toYaml . | nindent 2 }}
 {{ fromYaml .Values.additionalLoggingSources.kubeAudit.loggingOverlay }}
 {{ end }}
 
-{{/* Implements logic to add rke loggingOverlay fields to custom loggings based on the cluster type */}}
-{{- define "logging-operator.logging.rke.logging-overlay" -}}
-{{ fromYaml .Values.additionalLoggingSources.rke.loggingOverlay }}
-{{ end }}
-
-{{/* Implements logic to add rke2 loggingOverlay fields to custom loggings based on the cluster type */}}
-{{- define "logging-operator.logging.rke2.logging-overlay" -}}
-{{ fromYaml .Values.additionalLoggingSources.rke2.loggingOverlay }}
-{{ end }}
-
 {{/* Implements logic to add root loggingOverlay fields to custom loggings based on the cluster type */}}
 {{- define "logging-operator.logging.root.logging-overlay" -}}
 {{ fromYaml .Values.additionalLoggingSources.root.loggingOverlay }}
-{{ end }}
-
-{{/* Implements logic to add k3s loggingOverlay fields to custom loggings based on the cluster type */}}
-{{- define "logging-operator.logging.k3s.logging-overlay" -}}
-{{ fromYaml .Values.additionalLoggingSources.k3s.loggingOverlay }}
 {{ end }}
 
 {{/* Implements logic to add gke loggingOverlay fields to custom loggings based on the cluster type */}}
