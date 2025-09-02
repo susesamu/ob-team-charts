@@ -162,16 +162,13 @@
 +    fluentbit:
 +      log_level: "info"
 +      mem_buffer_limit: "5MB"
-+    loggingOverlay: {}
 +  rke2:
 +    enabled: false
 +    stripUnderscores: false
-+    loggingOverlay: {}
 +  k3s:
 +    enabled: false
 +    container_engine: "systemd"
 +    stripUnderscores: false
-+    loggingOverlay: {}
 +  aks:
 +    enabled: false
 +    loggingOverlay: {}
@@ -188,6 +185,9 @@
 +    fluentbit:
 +      logTag: kube-audit
 +      tolerations: []
++    loggingOverlay: {}
++  root:
++    enabled: false
 +    loggingOverlay: {}
 +
 +# configures node agent options for windows node agents
