@@ -52,19 +52,22 @@ spec:
 {{/* Top context to expose fields like `.Release` and `.Values` */}}
 {{- $top := first . -}}
 
+{{/* individualLoggingOverlay is the loggingOverlay specific to the logging implementation */}}
+{{- $individualLoggingOverlay := fromYaml (include (index . 1) $top) | default (dict ) -}}
+
 {{/* tpl is the template specific to the logging implementation */}}
-{{- $tpl := fromYaml (include (index . 1) $top) | default (dict ) -}}
+{{- $tpl := fromYaml (include (index . 2) $top) | default (dict ) -}}
 
-{{/* Generic is the shared rancher logging setttings from `_generic_logging.yaml` */}}
-{{- $generic := fromYaml (include (index . 2) $top) | default (dict ) -}}
+{{/* Generic is the shared rancher logging settings from `_generic_logging.yaml` */}}
+{{- $generic := fromYaml (include (index . 3) $top) | default (dict ) -}}
 
-{{/* values are from the values.yaml */}}
-{{- $values := $top.Values.loggingOverlay | default (dict ) -}}
+{{/* genericLoggingOverlay are from the values.yaml */}}
+{{- $genericLoggingOverlay := $top.Values.loggingOverlay | default (dict ) -}}
 
 ####### {{$generic}}
 
-{{/* the sources are merge right to left meaning tpl is the highest prcedence and values is the lowest */}}
-{{- toYaml (merge $tpl $values $generic) -}}
+{{/* the sources are merge right to left meaning individualLoggingOverlay is the highest precedence and generic is the lowest */}}
+{{- toYaml (merge $individualLoggingOverlay $tpl $genericLoggingOverlay $generic) -}}
 {{- end -}}
 
 {{- define "logging-operator.logging" -}}
