@@ -62,7 +62,7 @@ spec:
 {{- $generic := fromYaml (include (index . 3) $top) | default (dict ) -}}
 
 {{/* genericLoggingOverlay are from the values.yaml */}}
-{{- $genericLoggingOverlay := $top.Values.loggingOverlay | default (dict ) -}}
+{{- $genericLoggingOverlay := $top.Values.loggingOverlay -}}
 
 ####### {{$generic}}
 
