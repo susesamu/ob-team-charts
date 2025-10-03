@@ -32,6 +32,7 @@ data:
 
       server {
         listen          8080;
+        listen     [::]:8080;
         access_log      off;
 
         gzip            on;
@@ -75,10 +76,17 @@ data:
 
           sub_filter_once off;
 
-          {{- if and (not (empty .Values.global.cattle.clusterId )) (not (eq .Values.global.cattle.clusterId "local")) -}}
-          sub_filter '"appSubUrl":""' '"appSubUrl":"/k8s/clusters/{{ .Values.global.cattle.clusterId }}/api/v1/namespaces/{{ template "grafana.namespace" . }}/services/http:{{ template "grafana.fullname" . }}:{{ .Values.service.port }}/proxy"';
-          {{- else -}}
-          sub_filter '"appSubUrl":""' '"appSubUrl":"/api/v1/namespaces/{{ template "grafana.namespace" . }}/services/http:{{ template "grafana.fullname" . }}:{{ .Values.service.port }}/proxy"';
+          {{- if .Values.ingress.enabled }}
+            {{- range $host := .Values.ingress.host }}
+              # When accessing via ingress host, leave appSubUrl empty
+              sub_filter '"appSubUrl":""' '"appSubUrl":""';
+            {{- end }}
+          {{- else }}
+            {{- if and (not (empty .Values.global.cattle.clusterId )) (not (eq .Values.global.cattle.clusterId "local")) -}}
+              sub_filter '"appSubUrl":""' '"appSubUrl":"/k8s/clusters/{{ .Values.global.cattle.clusterId }}/api/v1/namespaces/{{ template "grafana.namespace" . }}/services/http:{{ template "grafana.fullname" . }}:{{ .Values.service.port }}/proxy"';
+            {{- else -}}
+              sub_filter '"appSubUrl":""' '"appSubUrl":"/api/v1/namespaces/{{ template "grafana.namespace" . }}/services/http:{{ template "grafana.fullname" . }}:{{ .Values.service.port }}/proxy"';
+            {{- end -}}
           {{- end -}}
 
           sub_filter ':"/avatar/' ':"avatar/';
