@@ -1,0 +1,6 @@
+helmRepo:
+  cname: orbs-team-charts.rancher.io
+
+validate:
+  url: https://github.com/rancher/ob-charts-tool.git
+  branch: main
