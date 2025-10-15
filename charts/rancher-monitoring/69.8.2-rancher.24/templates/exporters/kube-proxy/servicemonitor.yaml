@@ -47,9 +47,9 @@ spec:
       caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
     {{- end}}
     metricRelabelings:
-    {{- if .Values.kubeProxy.serviceMonitor.metricRelabelings }}
-    {{ tpl (toYaml .Values.kubeProxy.serviceMonitor.metricRelabelings | indent 4) . }}
-    {{- end }}
+{{- if .Values.kubeProxy.serviceMonitor.metricRelabelings }}
+{{ tpl (toYaml .Values.kubeProxy.serviceMonitor.metricRelabelings | indent 4) . }}
+{{- end }}
     {{ if .Values.global.cattle.clusterId }}
       - sourceLabels: [__address__]
         targetLabel: cluster_id
