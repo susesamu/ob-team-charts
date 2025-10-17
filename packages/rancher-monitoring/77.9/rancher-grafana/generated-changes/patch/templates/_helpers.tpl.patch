@@ -1,0 +1,67 @@
+--- charts-original/templates/_helpers.tpl
++++ charts/templates/_helpers.tpl
+@@ -1,3 +1,32 @@
++# Rancher
++{{- define "system_default_registry" -}}
++{{- if .Values.global.cattle.systemDefaultRegistry -}}
++{{- printf "%s/" .Values.global.cattle.systemDefaultRegistry -}}
++{{- end -}}
++{{- end -}}
++
++# Windows Support
++
++{{/*
++Windows cluster will add default taint for linux nodes,
++add below linux tolerations to workloads could be scheduled to those linux nodes
++*/}}
++
++{{- define "linux-node-tolerations" -}}
++- key: "cattle.io/os"
++  value: "linux"
++  effect: "NoSchedule"
++  operator: "Equal"
++{{- end -}}
++
++{{- define "linux-node-selector" -}}
++{{- if semverCompare "<1.14-0" .Capabilities.KubeVersion.GitVersion -}}
++beta.kubernetes.io/os: linux
++{{- else -}}
++kubernetes.io/os: linux
++{{- end -}}
++{{- end -}}
++
+ {{/* vim: set filetype=mustache: */}}
+ {{/*
+ Expand the name of the chart.
+@@ -65,8 +94,14 @@
+ Common labels
+ */}}
+ {{- define "grafana.labels" -}}
++app.kubernetes.io/component: {{ include "grafana.name" . }}
++app.kubernetes.io/managed-by: {{ .Release.Service }}
+ helm.sh/chart: {{ include "grafana.chart" . }}
++chart: {{ include "grafana.chart" . }}
++release: {{ $.Release.Name | quote }}
++heritage: {{ $.Release.Service | quote }}
+ {{ include "grafana.selectorLabels" . }}
++app.kubernetes.io/part-of: {{ template "kube-prometheus-stack.name" . }}
+ {{- if or .Chart.AppVersion .Values.image.tag }}
+ app.kubernetes.io/version: {{ mustRegexReplaceAllLiteral "@sha.*" .Values.image.tag "" | default .Chart.AppVersion | trunc 63 | trimSuffix "-" | quote }}
+ {{- end }}
+@@ -143,11 +178,11 @@
+ Return the appropriate apiVersion for Horizontal Pod Autoscaler.
+ */}}
+ {{- define "grafana.hpa.apiVersion" -}}
+-{{- if .Capabilities.APIVersions.Has "autoscaling/v2" }}  
+-{{- print "autoscaling/v2" }}  
+-{{- else }}  
+-{{- print "autoscaling/v2beta2" }}  
+-{{- end }} 
++{{- if .Capabilities.APIVersions.Has "autoscaling/v2" }}
++{{- print "autoscaling/v2" }}
++{{- else }}
++{{- print "autoscaling/v2beta2" }}
++{{- end }}
+ {{- end }}
+ 
+ {{/*
