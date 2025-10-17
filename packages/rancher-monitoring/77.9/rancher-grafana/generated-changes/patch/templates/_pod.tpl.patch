@@ -179,7 +179,7 @@
  topologySpreadConstraints:
    {{- toYaml . | nindent 2 }}
  {{- end }}
-++tolerations: {{ include "linux-node-tolerations" . | nindent 2 }}
++tolerations: {{ include "linux-node-tolerations" . | nindent 2 }}
  {{- with .Values.tolerations }}
 -tolerations:
    {{- toYaml . | nindent 2 }}
