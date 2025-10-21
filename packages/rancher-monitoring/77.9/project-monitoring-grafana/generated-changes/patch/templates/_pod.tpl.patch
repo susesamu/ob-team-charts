@@ -84,14 +84,15 @@
        {{- with .Values.sidecar.skipTlsVerify }}
        - name: SKIP_TLS_VERIFY
          value: "{{ . }}"
-@@ -891,9 +877,8 @@
+@@ -891,10 +877,8 @@
        - name: UNIQUE_FILENAMES
          value: "{{ . }}"
        {{- end }}
 -      {{- with .Values.sidecar.plugins.searchNamespace }}
        - name: NAMESPACE
 -        value: "{{ tpl (. | join ",") $root }}"
+-      {{- end }}
 +        value: "{{ template "project-prometheus-stack.projectNamespaceList" . }}"
-       {{- end }}
        {{- with .Values.sidecar.plugins.script }}
        - name: SCRIPT
+         value: {{ quote . }}
