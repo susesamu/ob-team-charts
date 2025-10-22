@@ -879,7 +879,6 @@ containers:
       {{- end }}
       - name: NAMESPACE
         value: "{{ template "project-prometheus-stack.projectNamespaceList" . }}"
-      {{- end }}
       {{- with .Values.sidecar.plugins.script }}
       - name: SCRIPT
         value: {{ quote . }}
