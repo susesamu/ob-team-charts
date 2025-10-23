@@ -32,7 +32,9 @@ data:
 
       server {
         listen          8081;
+        {{- if ne .Values.global.disableProxyIPv6 false }}
         listen     [::]:8081;
+        {{- end }}
         access_log      off;
 
         gzip            on;
