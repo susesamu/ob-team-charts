@@ -25,7 +25,7 @@ spec:
       app: fleet-controller
 {{- end }}
 ---
-  {{- if and .Values.rancherMonitoring.enabled (eq .Values.global.cattle.clusterId "local") -}}
+{{- if and .Values.rancherMonitoring.enabled (eq .Values.global.cattle.clusterId "local") -}}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
