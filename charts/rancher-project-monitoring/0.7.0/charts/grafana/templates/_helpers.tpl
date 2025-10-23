@@ -94,14 +94,8 @@ Allow the release namespace to be overridden for multi-namespace deployments in 
 Common labels
 */}}
 {{- define "grafana.labels" -}}
-app.kubernetes.io/component: {{ include "grafana.name" . }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
 helm.sh/chart: {{ include "grafana.chart" . }}
-chart: {{ include "grafana.chart" . }}
-release: {{ $.Release.Name | quote }}
-heritage: {{ $.Release.Service | quote }}
 {{ include "grafana.selectorLabels" . }}
-app.kubernetes.io/part-of: {{ template "kube-prometheus-stack.name" . }}
 {{- if or .Chart.AppVersion .Values.image.tag }}
 app.kubernetes.io/version: {{ mustRegexReplaceAllLiteral "@sha.*" .Values.image.tag "" | default .Chart.AppVersion | trunc 63 | trimSuffix "-" | quote }}
 {{- end }}
@@ -178,11 +172,11 @@ Return the appropriate apiVersion for ingress.
 Return the appropriate apiVersion for Horizontal Pod Autoscaler.
 */}}
 {{- define "grafana.hpa.apiVersion" -}}
-{{- if .Capabilities.APIVersions.Has "autoscaling/v2" }}
-{{- print "autoscaling/v2" }}
-{{- else }}
-{{- print "autoscaling/v2beta2" }}
-{{- end }}
+{{- if .Capabilities.APIVersions.Has "autoscaling/v2" }}  
+{{- print "autoscaling/v2" }}  
+{{- else }}  
+{{- print "autoscaling/v2beta2" }}  
+{{- end }} 
 {{- end }}
 
 {{/*
