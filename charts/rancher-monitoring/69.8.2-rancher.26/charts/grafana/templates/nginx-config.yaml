@@ -32,7 +32,7 @@ data:
 
       server {
         listen          8080;
-        {{- if ne .Values.global.disableProxyIPv6 false }}
+        {{- if ne .Values.global.disableProxyIPv6 true }}
         listen     [::]:8080;
         {{- end }}
         access_log      off;
