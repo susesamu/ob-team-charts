@@ -6,7 +6,7 @@ metadata:
   labels:
 {{ include "logging-operator.labels" . | indent 4 }}
 spec:
-  controlNamespace: {{ .Release.Namespace }}
+  controlNamespace: {{ include "logging-operator.namespace" . }}
   fluentd:
     {{- with .Values.fluentd.logLevel }}
     logLevel: {{ . }}

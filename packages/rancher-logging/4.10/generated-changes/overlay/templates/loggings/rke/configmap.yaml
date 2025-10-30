@@ -24,7 +24,7 @@ data:
     [OUTPUT]
         Name              forward
         Match             *
-        Host              {{ .Release.Name }}-root-fluentd.{{ .Release.Namespace }}.svc
+        Host              {{ .Release.Name }}-root-fluentd.{{ include "logging-operator.namespace" . }}.svc
         Port              24240
         Retry_Limit       False
 {{- end }}
