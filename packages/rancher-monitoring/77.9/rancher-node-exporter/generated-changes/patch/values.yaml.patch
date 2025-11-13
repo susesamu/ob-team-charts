@@ -23,17 +23,19 @@
    # To help compatibility with other charts which use global.imagePullSecrets.
    # Allow either an array of {name: pullSecret} maps (k8s-style), or an array of strings (more common helm-style).
    # global:
-@@ -43,8 +45,8 @@
+@@ -43,9 +45,9 @@
    env: {}
      # VARIABLE: value
    image:
 -    registry: quay.io
 -    repository: brancz/kube-rbac-proxy
+-    tag: v0.19.1
 +    registry: ''
-+    repository: rancher/mirrored-brancz-kube-rbac-proxy
-     tag: v0.19.1
++    repository: rancher/appco-kube-rbac-proxy
++    tag: 0.19.1-15.2
      sha: ""
      pullPolicy: IfNotPresent
+ 
 @@ -126,13 +128,13 @@
    clusterIP: ""
    ## Default service port. Sets the port of the exposed container as well (NE or kubeRBACProxy).
