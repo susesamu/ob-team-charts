@@ -1090,9 +1090,10 @@
    thanosImage:
 -    registry: quay.io
 -    repository: thanos/thanos
-+    repository: rancher/mirrored-thanos-thanos
-     tag: v0.39.2
+-    tag: v0.39.2
 -    sha: ""
++    repository: rancher/appco-thanos
++    tag: 0.39.2-7.3
  
    ## Set a Label Selector to filter watched prometheus and prometheusAgent
    ##
@@ -1271,9 +1272,10 @@
      image:
 -      registry: quay.io
 -      repository: thanos/thanos
-+      repository: rancher/mirrored-thanos-thanos
-       tag: v0.39.2
+-      tag: v0.39.2
 -      sha: ""
++      repository: rancher/appco-thanos
++      tag: 0.39.2-7.3
  
      ## Namespaces to be selected for PrometheusRules discovery.
      ## If nil, select own namespace. Namespaces to be selected for ServiceMonitor discovery.
