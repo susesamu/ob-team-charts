@@ -59,7 +59,7 @@ spec:
     {{- end }}
 {{- end -}}
 
-{{- define "logging-operator.util.merge.logging" -}}
+{{- define "logging-operator.logging" -}}
 {{/* Top context to expose fields like `.Release` and `.Values` */}}
 {{- $top := first . -}}
 
@@ -75,14 +75,16 @@ spec:
 {{/* genericLoggingOverlay are from the values.yaml */}}
 {{- $genericLoggingOverlay := $top.Values.loggingOverlay | default (dict) -}}
 
-{{/* Defensive indexing - check if template names exist before including */}}
+{{/* Defensive indexing - check if template index exist before including */}}
 {{- if ge (len .) 2 }}
-  {{- $overlayName := index . 1 -}}
-  {{- $individualLoggingOverlay := fromYaml (include $overlayName $top | default "") | default (dict) -}}
-  {{- if ge (len .) 3 }}
-    {{- $tplName := index . 2 -}}
-    {{- $tpl = fromYaml (include $tplName $top | default "") | default (dict) -}}
-  {{- end }}
+  {{- $tplName := index . 1 -}}
+  {{- $tpl = fromYaml (include $tplName $top | default "") | default (dict) -}}
+{{- end }}
+
+{{/* If an overlay template is passed as index 2, include it */}}
+{{- if ge (len .) 3 }}
+  {{- $overlayName := index . 2 -}}
+  {{- $individualLoggingOverlay = fromYaml (include $overlayName $top | default "") | default (dict) -}}
 {{- end }}
 
 {{/* Generic base template (always included) */}}
@@ -92,8 +94,4 @@ spec:
 {{- $merged := merge $individualLoggingOverlay $genericLoggingOverlay $tpl $generic -}}
 
 {{- toYaml $merged -}}
-{{- end -}}
-
-{{- define "logging-operator.logging" -}}
-{{- include "logging-operator.util.merge.logging" (append . "logging-operator.logging.tpl") -}}
 {{- end -}}
