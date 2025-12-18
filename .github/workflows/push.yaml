@@ -2,6 +2,10 @@ name: push
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+    - main
+
 
 jobs:
   build:
@@ -81,7 +85,7 @@ jobs:
             MANIFEST_REF="refs/heads/$MANIFEST_BRANCH_NAME"
             IS_FROZEN=$(yq e ".spec.forProvider.conditions[].refName[].include[] | select(. == \"$MANIFEST_REF\")" /tmp/code-freeze.yaml)
             if [ -n "$IS_FROZEN" ]; then
-              echo "Branch $MANIFEST_BRANCH_NAME is frozen. Skipping."
+              echo "Branch $MANIFEST_BRANCH_NAME is frozen. Skipping." | tee -a "$GITHUB_STEP_SUMMARY"
               continue
             fi
 
