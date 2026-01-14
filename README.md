@@ -13,13 +13,15 @@ None of the changes we apply at this level should be specific to a single Ranche
 
 ## How do we manage Chart version numbers?
 
-The short version, most charts should use this syntax: `{upstream version}-rancher.{incrementing number}`.
+Most charts should use this syntax: `{upstream version}-rancher.{incrementing number}`.  
 
 Where each new `{upstream version}` resets the `{incrementing number}`. The result being that for any upstream version 
 that we release, we will also be able to track what rancher specific changes were applied.
 And that this version is universal across all Rancher minor versions that support a given `{upstream version}`.
 
 For more specifics on why this format is used, see: [How do we manage Chart versions across this repo and `rancher/charts`?](./docs/semver-across-chart-repos.md)
+
+The only exception is Rancher Project Monitoring uses SemVer. However, each version of Project Monitoring chart is directly dependent on a specific Rancher Monitoring.
 
 ## How are PRs merged into this repo?
 Due to how we manage the version numbers here, read the section above for detail, we must ensure that we only merge PRs after charts are valdiated. This means that PRs must have both: approving review from ORBS team, and a validation comment on the PR or issue from ORBS QA team.
