@@ -1,6 +1,6 @@
 --- charts-original/templates/nginx-config.yaml
 +++ charts/templates/nginx-config.yaml
-@@ -81,12 +81,12 @@
+@@ -83,12 +83,12 @@
                # When accessing via ingress host, leave appSubUrl empty
                sub_filter '"appSubUrl":""' '"appSubUrl":""';
              {{- end }}
