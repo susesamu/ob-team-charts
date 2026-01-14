@@ -1,19 +1,19 @@
 # FAQs about the new repo
 
 ## What is this repository for compared to `rancher/charts`?
-This repo is the O&B teams primary source of truth for the Charts we maintain.
+This repo is the ORBS teams primary source of truth for the Charts we maintain.
 Primarily it is focused on the charts we pull from 3rd party sources.
-But can also be used for internal produced charts from O&B team if it makes sense.
+But can also be used for internal produced charts from ORBS team if it makes sense.
 
 ## What issues does this repo solve compared to the existing `rancher/charts` repo and process?
-This repository solves a unique set of problems that the O&B team have while maintaining our charts Monitoring and Logging charts.
+This repository solves a unique set of problems that the ORBS team have while maintaining our charts Monitoring and Logging charts.
 At a high level, these problems are:
 - Issues with Regressions caused by current rebase workflows,
 - Missed dependency bumps during current rebase causing usage of more image tags than necessary,
   - In other words, we do a rebase and expect to remove CVEs, but they remain because some charts use old tags.
 - Varying patches based on Upstream Chart Version for Rancher Branch on `rancher/charts`
 
-## What factors make the current (or old) chart process for O&B complex?
+## What factors make the current (or old) chart process for ORBS complex?
 - We have 3 distinct types of changes that are made to `rancher/charts` by our team:
   - Chart Rebase Work,
   - Chart Image Bumps and Security Patches,
@@ -26,7 +26,7 @@ These variables cause our team to repeat a lot of work, but just subtly differen
 However, the cognitive load of comparing similar, but different, patches for the same upstream charts on different branches can be taxing.
 
 ## Why only `main` branch in this repo?
-The principal function of this repo is to reduce redundant work from processes used by the O&B team today.
+The principal function of this repo is to reduce redundant work from processes used by the ORBS team today.
 The current process to maintain Monitoring and Logging -essentially- involve us maintaining the same upstream version in multiple Rancher Branches.
 
 Instead, if we apply most of our Rancher specific changes in a Rancher version agnostic manner we can maintain important changes once.
