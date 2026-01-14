@@ -31,8 +31,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Fetch full history to allow proper git diff with upstream
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+
+      - run: |
+          git switch -c "${{ github.head_ref }}"
 
       - name: Fetch ob-charts-tool
         run: ./dev-scripts/pull-scripts
