@@ -1,6 +1,6 @@
 # How to test charts straight from ob-team-charts
 
-The ob-team-charts repository is used by the O&B team to handle all of its custom Helm charts, but Rancher does not pull them directly from this repo. Rancher only pulls from the `rancher/charts` repository by default, so some extra steps are needed if you want to run and test charts from `rancher/ob-team-charts` or from a fork.
+The ob-team-charts repository is used by the ORBS team to handle all of its custom Helm charts, but Rancher does not pull them directly from this repo. Rancher only pulls from the `rancher/charts` repository by default, so some extra steps are needed if you want to run and test charts from `rancher/ob-team-charts` or from a fork.
 
 ## Creating a ClusterRepo
 

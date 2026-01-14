@@ -1,9 +1,9 @@
 # ob-team-charts
 A repo for Rancher Observability &amp; Backups team's charts - a canonical dev spot just before rancher/charts.
 
-## What O&B projects use this repo?
+## What ORBS projects use this repo?
 
-This covers the following O&B team charts:
+This covers the following ORBS team charts:
 - `rancher-monitoring`,
 - `rancher-project-monitoring`,
 - `prometheus-federator`, and
@@ -23,7 +23,7 @@ And that this version is universal across all Rancher minor versions that suppor
 For more specifics on why this format is used, see: [How do we manage Chart versions across this repo and `rancher/charts`?](./docs/semver-across-chart-repos.md)
 
 ## How are PRs merged into this repo?
-Due to how we manage the version numbers here, read the section above for detail, we must ensure that we only merge PRs after charts are valdiated. This means that PRs must have both: approving review from O&B team, and a validation comment on the PR or issue from O&B QA team.
+Due to how we manage the version numbers here, read the section above for detail, we must ensure that we only merge PRs after charts are valdiated. This means that PRs must have both: approving review from ORBS team, and a validation comment on the PR or issue from ORBS QA team.
 
 This way every version published to main is a "safe version" - meaning while they may still have bugs, none should have critical flaws. This gives us greater confidence to ship multiple changes to `rancher/charts` at one time (when we release) - as all changes were tested at least once before that.
 
@@ -35,9 +35,11 @@ In the new system, we will suffix each upstream version with a `-rancher.{num}` 
 
 Using that will give us a better identifier for our Rancher specific modifications that we use across Rancher minor versions.
 Specifically some other ways this will benfit our team is:
-- O&B team maintains a single canonical version of upstream chart changes,
+- ORBS team maintains a single canonical version of upstream chart changes,
 - `rancher-monitoring` and `rancher-project-monitoirng` rebase can be a single PR
   - Then followed up by PRs in `rancher/prometheus-federator` and all synced to `rancher/charts` in unison. 
 
 Please review the [Monitoring Rebase doc](./docs/monitoring-rebase.md) for more details on the process this repo allows.
 
+## Repo name ORBS vs O&B (ob)
+The team has been renamed from O&B to ORBS. The repo name will remain the same.
