@@ -5,8 +5,7 @@ A repo for Rancher Observability &amp; Backups team's charts - a canonical dev s
 
 This covers the following ORBS team charts:
 - `rancher-monitoring`,
-- `rancher-project-monitoring`,
-- `prometheus-federator`, and
+- `rancher-project-monitoring`, and
 - `rancher-logging`
 
 This is where we apply the majority of the Rancher specific changes to these charts.
