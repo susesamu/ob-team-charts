@@ -24,11 +24,26 @@ For more specifics on why this format is used, see: [How do we manage Chart vers
 The only exception is Rancher Project Monitoring uses SemVer. However, each version of Project Monitoring chart is directly dependent on a specific Rancher Monitoring.
 
 ## How are PRs merged into this repo?
-Due to how we manage the version numbers here, read the section above for detail, we must ensure that we only merge PRs after charts are valdiated. This means that PRs must have both: approving review from ORBS team, and a validation comment on the PR or issue from ORBS QA team.
+PRs are merged only after they've been tested. The flow is:
+1. ORBS team approves the PR
+2. QA validates the changes and comments on the associated issue
+3. ORBS team merges the PR
 
-This way every version published to main is a "safe version" - meaning while they may still have bugs, none should have critical flaws. This gives us greater confidence to ship multiple changes to `rancher/charts` at one time (when we release) - as all changes were tested at least once before that.
+This ensures every commit on main is a "safe version" - tested and ready to release. It also lets us maintain a single branch (`main`) instead of separate dev and release branches.
+
+Since revision numbers are sequential (e.g., `1.2.3-rancher.1`, `1.2.3-rancher.2`), PRs must merge in order. If multiple PRs are open for the same package, they need to coordinate merge order and rebase after earlier revisions merge.
 
 For more on what details to provide QA for testing, see: [How to test charts straight from ob-team-charts](./docs/testing-from-ob-team-charts.md).
+
+### PR Labels
+
+The ORBS team uses these labels to track PR status:
+
+- **`revision-hold`**: Another PR has a lower `-rancher.x` revision that must merge first. Once that PR merges, this label will be removed and the PR will need to be rebased.
+
+- **`needs-rebase`**: The PR is behind main or has become stale. Contributor should rebase their PR to include recent changes.
+
+- **`stale-revision-number`**: The revision number in this PR is already released or claimed by another PR further along in QA. Sync with the ORBS team to pick a new revision number.
 
 ## How does rebasing for Rancher Monitoring charts work with this repo?
 Overall the process isn't too different, however how we manage a particular upstream version will be different.
