@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: registry.suse.com/bci/bci-base:latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Install Dependencies
         run: zypper --non-interactive in curl tar gzip git make jq go awk patch
@@ -33,11 +36,31 @@ jobs:
           NEW_CHARTS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^charts/(rancher-monitoring|rancher-logging)/[^/]*/Chart.yaml$' | sed -e 's|charts/\(.*\)/\(.*\)/Chart.yaml|\1/\2|' | tr '\n' ' ')
           echo "new_charts=${NEW_CHARTS}" >> $GITHUB_OUTPUT
 
+      - name: Read App Credentials from Vault
+        if: steps.detect_new_charts.outputs.new_charts != ''
+        uses: rancher-eio/read-vault-secrets@main
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/github/app-credentials appId | APPID;
+            secret/data/github/repo/${{ github.repository }}/github/app-credentials privateKey | PRIVATEKEY
+
+      - name: Generate GitHub App Token
+        if: steps.detect_new_charts.outputs.new_charts != ''
+        id: generate_token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ env.APPID }}
+          private-key: ${{ env.PRIVATEKEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            charts
+            org
+
       - name: Update Downstream Chart and Open PR
         if: steps.detect_new_charts.outputs.new_charts != ''
         env:
           NEW_CHARTS: ${{ steps.detect_new_charts.outputs.new_charts }}
-          GH_TOKEN: ${{ secrets.CHARTS_REPO_PAT }}
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
           COMMIT_SHA: ${{ github.sha }}
         run: |
           set -eux
