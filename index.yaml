@@ -1409,7 +1409,7 @@ entries:
       catalog.cattle.io/upstream-version: 77.9.1
     apiVersion: v2
     appVersion: v0.85.0
-    created: "2026-01-16T09:46:53.214641+05:30"
+    created: "2026-01-16T10:35:30.891393+05:30"
     dependencies:
     - condition: grafana.enabled
       name: grafana
@@ -1418,15 +1418,15 @@ entries:
     - condition: hardenedKubelet.enabled
       name: hardenedKubelet
       repository: file://./charts/hardenedKubelet
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: hardenedNodeExporter.enabled
       name: hardenedNodeExporter
       repository: file://./charts/hardenedNodeExporter
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: k3sServer.enabled
       name: k3sServer
       repository: file://./charts/k3sServer
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: kubeStateMetrics.enabled
       name: kube-state-metrics
       repository: file://./charts/kube-state-metrics
@@ -1434,19 +1434,19 @@ entries:
     - condition: kubeAdmControllerManager.enabled
       name: kubeAdmControllerManager
       repository: file://./charts/kubeAdmControllerManager
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: kubeAdmEtcd.enabled
       name: kubeAdmEtcd
       repository: file://./charts/kubeAdmEtcd
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: kubeAdmProxy.enabled
       name: kubeAdmProxy
       repository: file://./charts/kubeAdmProxy
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: kubeAdmScheduler.enabled
       name: kubeAdmScheduler
       repository: file://./charts/kubeAdmScheduler
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: prometheus-adapter.enabled
       name: prometheus-adapter
       repository: file://./charts/prometheus-adapter
@@ -1458,43 +1458,43 @@ entries:
     - condition: rke2ControllerManager.enabled
       name: rke2ControllerManager
       repository: file://./charts/rke2ControllerManager
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rke2Etcd.enabled
       name: rke2Etcd
       repository: file://./charts/rke2Etcd
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rke2IngressNginx.enabled
       name: rke2IngressNginx
       repository: file://./charts/rke2IngressNginx
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rke2Proxy.enabled
       name: rke2Proxy
       repository: file://./charts/rke2Proxy
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rke2Scheduler.enabled
       name: rke2Scheduler
       repository: file://./charts/rke2Scheduler
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rkeControllerManager.enabled
       name: rkeControllerManager
       repository: file://./charts/rkeControllerManager
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rkeEtcd.enabled
       name: rkeEtcd
       repository: file://./charts/rkeEtcd
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rkeIngressNginx.enabled
       name: rkeIngressNginx
       repository: file://./charts/rkeIngressNginx
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rkeProxy.enabled
       name: rkeProxy
       repository: file://./charts/rkeProxy
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: rkeScheduler.enabled
       name: rkeScheduler
       repository: file://./charts/rkeScheduler
-      version: 0.1.5-rancher2
+      version: 0.1.9
     - condition: windowsExporter.enabled
       name: windowsExporter
       repository: file://./charts/windowsExporter
@@ -1503,7 +1503,7 @@ entries:
       and Prometheus rules combined with documentation and scripts to provide easy
       to operate end-to-end Kubernetes cluster monitoring with Prometheus using the
       Prometheus Operator.
-    digest: e65db22d079ef6374a6872b431c6d321a1fae3787e3a467be0109ba2ccc38286
+    digest: ecbf7336526717e0c0987d4f337dcd4c688b6b1e73bb4efcf2e6c87ee1b675c0
     home: https://github.com/prometheus-operator/kube-prometheus
     icon: file://assets/logos/rancher-monitoring.png
     keywords:
@@ -11113,9 +11113,9 @@ entries:
       catalog.cattle.io/namespace: cattle-monitoring-system
       catalog.cattle.io/release-name: rancher-monitoring-crd
     apiVersion: v2
-    created: "2026-01-16T09:46:53.505767+05:30"
+    created: "2026-01-16T10:35:31.185816+05:30"
     description: Installs the CRDs for rancher-monitoring.
-    digest: 55e49682cc316204140b05dc3e7dd2c8a69bae27f77290f51f757d4810f258a7
+    digest: 29bcccb988eee0a33a7189e6cb3395d5ecff2898225237247a0668cddab5999a
     name: rancher-monitoring-crd
     type: application
     urls:
