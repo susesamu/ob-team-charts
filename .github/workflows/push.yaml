@@ -54,7 +54,6 @@ jobs:
           owner: ${{ github.repository_owner }}
           repositories: |
             charts
-            # Access to the 'org' repository is required to download the code-freeze manifest used later in this workflow.
             org
 
       - name: Update Downstream Chart and Open PR
