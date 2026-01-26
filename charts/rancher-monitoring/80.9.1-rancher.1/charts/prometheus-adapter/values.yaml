@@ -11,7 +11,6 @@ global:
   # - name: "image-pull-secret"
   # or
   # - "image-pull-secret"
-
 affinity: {}
 
 topologySpreadConstraints: []
@@ -319,3 +318,6 @@ extraManifests: []
   #     name: prometheus-extra
   #   data:
   #     extra-data: "value"
+
+# Optional: set revisionHistoryLimit for the Deployment
+revisionHistoryLimit: 10
