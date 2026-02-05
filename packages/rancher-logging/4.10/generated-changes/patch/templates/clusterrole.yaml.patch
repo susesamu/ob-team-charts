@@ -1,6 +1,14 @@
 --- charts-original/templates/clusterrole.yaml
 +++ charts/templates/clusterrole.yaml
-@@ -112,20 +112,6 @@
+@@ -28,7 +28,6 @@
+   - endpoints
+   - namespaces
+   - nodes
+-  - nodes/proxy
+   verbs:
+   - get
+   - list
+@@ -112,20 +111,6 @@
    - update
    - watch
  - apiGroups:
