@@ -4,7 +4,7 @@
  kind: HostTailer
  metadata:
    name: {{ .name }}
-+  namespace: {{ include "logging-operator.namespace" . }}
++  namespace: {{ include "logging-operator.namespace" $ }}
  spec:
    {{- with .fileTailers }}
    fileTailers:
