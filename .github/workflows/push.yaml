@@ -2,6 +2,11 @@ name: push
 
 on:
   workflow_dispatch:
+    inputs:
+      charts:
+        description: 'Space-separated list of charts to sync (e.g., "rancher-monitoring/105.0.0-rancher.1 rancher-logging/4.10.0-rancher.21")'
+        required: true
+        type: string
   push:
     branches:
     - main
@@ -30,10 +35,14 @@ jobs:
       - name: Detect new chart version
         id: detect_new_charts
         run: |
-          # Explicitly fetch the 'before' commit to ensure it's available for diffing
-          git fetch origin ${{ github.event.before }}
-
-          NEW_CHARTS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^charts/(rancher-monitoring|rancher-logging)/[^/]*/Chart.yaml$' | sed -e 's|charts/\(.*\)/\(.*\)/Chart.yaml|\1/\2|' | tr '\n' ' ')
+          # Use workflow input if manually triggered, otherwise detect from git diff
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            NEW_CHARTS="${{ inputs.charts }}"
+          else
+            # Explicitly fetch the 'before' commit to ensure it's available for diffing
+            git fetch origin ${{ github.event.before }}
+            NEW_CHARTS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^charts/(rancher-monitoring|rancher-logging)/[^/]*/Chart.yaml$' | sed -e 's|charts/\(.*\)/\(.*\)/Chart.yaml|\1/\2|' | tr '\n' ' ')
+          fi
           echo "new_charts=${NEW_CHARTS}" >> $GITHUB_OUTPUT
 
       - name: Read App Credentials from Vault
