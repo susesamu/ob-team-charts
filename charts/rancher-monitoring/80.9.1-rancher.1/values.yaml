@@ -190,7 +190,7 @@ kubeAdmControllerManager:
       useServiceAccountCredentials: true
       insecureSkipVerify: true
     nodeSelector:
-      node-role.kubernetes.io/master: ""
+      node-role.kubernetes.io/control-plane: ""
     tolerations:
     - effect: "NoExecute"
       operator: "Exists"
@@ -209,7 +209,7 @@ kubeAdmScheduler:
       useServiceAccountCredentials: true
       insecureSkipVerify: true
     nodeSelector:
-      node-role.kubernetes.io/master: ""
+      node-role.kubernetes.io/control-plane: ""
     tolerations:
     - effect: "NoExecute"
       operator: "Exists"
@@ -237,7 +237,7 @@ kubeAdmEtcd:
     port: 10014
     useLocalhost: true
     nodeSelector:
-      node-role.kubernetes.io/master: ""
+      node-role.kubernetes.io/control-plane: ""
     tolerations:
     - effect: "NoExecute"
       operator: "Exists"
@@ -258,7 +258,7 @@ rke2ControllerManager:
     port: 10011
     useLocalhost: true
     nodeSelector:
-      node-role.kubernetes.io/master: "true"
+      node-role.kubernetes.io/control-plane: "true"
     tolerations:
       - effect: "NoExecute"
         operator: "Exists"
@@ -286,7 +286,7 @@ rke2Scheduler:
     port: 10012
     useLocalhost: true
     nodeSelector:
-      node-role.kubernetes.io/master: "true"
+      node-role.kubernetes.io/control-plane: "true"
     tolerations:
       - effect: "NoExecute"
         operator: "Exists"
