@@ -447,8 +447,8 @@ alertmanager:
     ## Image of Alertmanager
     ##
     image:
-      repository: rancher/mirrored-prometheus-alertmanager
-      tag: v0.28.1
+      repository: rancher/appco-alertmanager
+      tag: 0.30.0-12.15
       sha: ""
 
     ## Secrets is a list of Secrets in the same namespace as the Alertmanager object, which shall be mounted into the
@@ -841,7 +841,7 @@ grafana:
   proxy:
     image:
       repository: rancher/mirrored-library-nginx
-      tag: 1.27.2-alpine
+      tag: 1.29.1-alpine
 
   ## Enable an Specify container in extraContainers. This is meant to allow adding an authentication proxy to a grafana pod
   extraContainers: |
@@ -865,6 +865,11 @@ grafana:
       securityContext:
         runAsUser: 101
         runAsGroup: 101
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
 
   ## Volumes that can be used in containers
   extraContainerVolumes:
@@ -1153,7 +1158,7 @@ prometheus:
     ##
     image:
       repository: rancher/prom-prometheus
-      tag: v3.5.0
+      tag: v3.8.1
       sha: ""
 
     ## Tolerations for use with node taints
@@ -1448,7 +1453,7 @@ prometheus:
     proxy:
       image:
         repository: rancher/mirrored-library-nginx
-        tag: 1.27.2-alpine
+        tag: 1.29.1-alpine
 
     ## Containers allows injecting additional containers. This is meant to allow adding an authentication proxy to a Prometheus pod.
     ## if using proxy extraContainer update targetPort with proxy container port
@@ -1473,6 +1478,11 @@ prometheus:
         securityContext:
           runAsUser: 101
           runAsGroup: 101
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
 
     ## InitContainers allows injecting additional initContainers. This is meant to allow doing some changes
     ## (permissions, dir tree) on mounted volumes before starting prometheus
