@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  registry: docker.io
+  registry: ""
   repository: rancher/appco-node-exporter
   # Overrides the image tag whose default is {{ printf "v%s" .Chart.AppVersion }}
   tag: 1.10.2-11.21

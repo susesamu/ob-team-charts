@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  registry: docker.io
+  registry: ""
   repository: rancher/mirrored-prometheus-windows-exporter
   os: "windows"
   # Overrides the image tag whose default is {{ printf "v%s" .Chart.AppVersion }}

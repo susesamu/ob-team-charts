@@ -1550,7 +1550,7 @@ entries:
       catalog.cattle.io/upstream-version: 80.9.1
     apiVersion: v2
     appVersion: v0.87.1
-    created: "2026-02-13T21:05:29.311598-05:00"
+    created: "2026-02-13T22:28:42.917998-05:00"
     dependencies:
     - condition: grafana.enabled
       name: grafana
@@ -1644,7 +1644,7 @@ entries:
       and Prometheus rules combined with documentation and scripts to provide easy
       to operate end-to-end Kubernetes cluster monitoring with Prometheus using the
       Prometheus Operator.
-    digest: 4a4692449ea3f4568e81b1952f46e6560fab51c624148b934fa5ce046e02371e
+    digest: 532ac70c91b0b39730ae703f7ada89347b6b5ee747d38df792c88ee2b39cb425
     home: https://github.com/prometheus-operator/kube-prometheus
     icon: file://assets/logos/rancher-monitoring.png
     keywords:
