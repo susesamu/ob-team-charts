@@ -1023,6 +1023,17 @@
          sha: ""
          pullPolicy: IfNotPresent
  
+@@ -2908,8 +3700,8 @@
+     patch:
+       enabled: true
+       image:
+-        registry: ghcr.io
+-        repository: jkroepke/kube-webhook-certgen
++        registry: ""
++        repository: rancher/mirrored-ingress-nginx-kube-webhook-certgen
+         tag: 1.7.4
+         sha: ""
+         pullPolicy: IfNotPresent
 @@ -3298,10 +4090,8 @@
    ## Prometheus-operator image
    ##
