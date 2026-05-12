@@ -1,23 +1,26 @@
 --- charts-original/templates/prometheus/servicemonitor.yaml
 +++ charts/templates/prometheus/servicemonitor.yaml
-@@ -35,8 +35,19 @@
+@@ -35,8 +35,22 @@
      bearerTokenFile: {{ .Values.prometheus.serviceMonitor.bearerTokenFile }}
      {{- end }}
      path: "{{ trimSuffix "/" .Values.prometheus.prometheusSpec.routePrefix }}/metrics"
-+    metricRelabelings: 
++    {{- $hasExtra := or .Values.global.cattle.clusterId .Values.global.cattle.clusterName }}
++    {{- if or .Values.prometheus.serviceMonitor.metricRelabelings $hasExtra }}
++    metricRelabelings:
      {{- if .Values.prometheus.serviceMonitor.metricRelabelings }}
 -    metricRelabelings: {{- tpl (toYaml .Values.prometheus.serviceMonitor.metricRelabelings | nindent 6) . }}
 +    {{- tpl (toYaml .Values.prometheus.serviceMonitor.metricRelabelings | nindent 6) . }}
 +    {{- end }}
-+    {{ if .Values.global.cattle.clusterId }}
++    {{- if .Values.global.cattle.clusterId }}
 +      - sourceLabels: [__address__]
 +        targetLabel: cluster_id
-+        replacement: {{ .Values.global.cattle.clusterId }}
++        replacement: {{ .Values.global.cattle.clusterId | quote }}
 +    {{- end }}
-+    {{ if .Values.global.cattle.clusterName}}
++    {{- if .Values.global.cattle.clusterName }}
 +      - sourceLabels: [__address__]
 +        targetLabel: cluster_name
-+        replacement: {{ .Values.global.cattle.clusterName }}
++        replacement: {{ .Values.global.cattle.clusterName | quote }}
++    {{- end }}
      {{- end }}
      {{- if .Values.prometheus.serviceMonitor.relabelings }}
      relabelings: {{- toYaml .Values.prometheus.serviceMonitor.relabelings | nindent 6 }}
