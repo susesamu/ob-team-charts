@@ -1,9 +1,8 @@
 name: Test Monitoring Chart
 
 # Runs automatically for org members, or when a maintainer adds the 'ci-test-monitoring' label.
-# Uses pull_request_target so the workflow has repo context even for fork PRs.
 on:
-  pull_request_target:
+  pull_request:
     types: [labeled, opened, synchronize]
     branches:
       - main
@@ -58,15 +57,21 @@ jobs:
             # Strip the "rancher-monitoring/" prefix to get the bare version (e.g. 80.9.1-rancher.9)
             VERSION="${entry#rancher-monitoring/}"
             # Extract the series prefix used as the key in charts-config.yaml (e.g. 80.9.1-rancher.9 → 80.9)
-            SERIES=$(echo "$VERSION" | grep -oE '^[0-9]+\.[0-9]+')
+            SERIES=$(echo "$VERSION" | grep -oE '^[0-9]+\.[0-9]+') || true
+            if [ -z "$SERIES" ]; then
+              echo "::error::Unable to determine monitoring series for version '${VERSION}'"
+              exit 1
+            fi
             # Look up every Rancher branch configured for this series (e.g. dev-v2.14)
             while IFS= read -r branch; do
+              [ -z "$branch" ] && continue
+              [ "$branch" = "null" ] && continue
               # Strip "dev-v" to get the Rancher minor version (e.g. dev-v2.14 → 2.14)
               RANCHER_MINOR="${branch#dev-v}"
               # Append {"version": "...", "rancher_minor": "..."} to the matrix array
               MATRIX=$(printf '%s' "$MATRIX" | jq --arg v "$VERSION" --arg r "$RANCHER_MINOR" \
                 '. + [{"version": $v, "rancher_minor": $r}]')
-            done < <(yq ".packages.rancher-monitoring.\"${SERIES}\".branches[].branch" charts-config.yaml)
+            done < <(yq -r ".packages.rancher-monitoring.\"${SERIES}\".branches[].branch" charts-config.yaml)
           done < <(echo "$CHARTS" | tr ' ' '\n' | grep '^rancher-monitoring/')
           echo "Detected matrix: $MATRIX"
           # Compact to a single line — GITHUB_OUTPUT does not support multiline values
@@ -101,13 +106,26 @@ jobs:
         run: |
           RANCHER_MINOR="${{ matrix.rancher_minor }}"
           K3S_VERSION=$(yq ".\"rancher-k3s\".\"${RANCHER_MINOR}\"" charts-config.yaml)
+
           helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
-          RANCHER_VERSION=$(helm search repo rancher-latest/rancher --versions -o json \
-            | jq -r --arg minor "${RANCHER_MINOR}." \
-              '[.[] | select(.version | startswith($minor)) | .version] | sort | last')
+          RANCHER_VERSION=$(
+            helm search repo rancher-latest/rancher --versions -o json \
+              | jq -r --arg minor "${RANCHER_MINOR}." '.[] | select(.version | startswith($minor)) | .version' \
+              | sort -V | tail -n1
+          )
+
+          if [ -z "$RANCHER_VERSION" ] || [ "$RANCHER_VERSION" = "null" ]; then
+            echo "::error::Failed to resolve Rancher version for minor ${RANCHER_MINOR}"
+            exit 1
+          fi
+          if [ -z "$K3S_VERSION" ] || [ "$K3S_VERSION" = "null" ]; then
+            echo "::error::Failed to resolve k3s version for Rancher minor ${RANCHER_MINOR} (charts-config.yaml:rancher-k3s)"
+            exit 1
+          fi
+
           echo "Rancher version: $RANCHER_VERSION, k3s version: $K3S_VERSION"
-          echo "rancher=$RANCHER_VERSION" >> $GITHUB_OUTPUT
-          echo "k3s=$K3S_VERSION" >> $GITHUB_OUTPUT
+          echo "rancher=$RANCHER_VERSION" >> "$GITHUB_OUTPUT"
+          echo "k3s=$K3S_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Install k3s
         run: |
