@@ -1,25 +1,28 @@
 --- charts-original/templates/exporters/kube-proxy/servicemonitor.yaml
 +++ charts/templates/exporters/kube-proxy/servicemonitor.yaml
-@@ -46,10 +46,20 @@
+@@ -46,10 +46,23 @@
      tlsConfig:
        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
      {{- end}}
 -{{- if .Values.kubeProxy.serviceMonitor.metricRelabelings }}
++    {{- $hasExtra := or .Values.global.cattle.clusterId .Values.global.cattle.clusterName }}
++    {{- if or .Values.kubeProxy.serviceMonitor.metricRelabelings $hasExtra }}
      metricRelabelings:
 -{{ tpl (toYaml .Values.kubeProxy.serviceMonitor.metricRelabelings | indent 4) . }}
 -{{- end }}
 +    {{- if .Values.kubeProxy.serviceMonitor.metricRelabelings }}
-+    {{ tpl (toYaml .Values.kubeProxy.serviceMonitor.metricRelabelings | indent 4) . }}
++    {{- tpl (toYaml .Values.kubeProxy.serviceMonitor.metricRelabelings | nindent 6) . }}
 +    {{- end }}
-+    {{ if .Values.global.cattle.clusterId }}
++    {{- if .Values.global.cattle.clusterId }}
 +      - sourceLabels: [__address__]
 +        targetLabel: cluster_id
-+        replacement: {{ .Values.global.cattle.clusterId }}
++        replacement: {{ .Values.global.cattle.clusterId | quote }}
 +    {{- end }}
-+    {{ if .Values.global.cattle.clusterName}}
++    {{- if .Values.global.cattle.clusterName }}
 +      - sourceLabels: [__address__]
 +        targetLabel: cluster_name
-+        replacement: {{ .Values.global.cattle.clusterName }}
++        replacement: {{ .Values.global.cattle.clusterName | quote }}
++    {{- end }}
 +    {{- end }}
  {{- if .Values.kubeProxy.serviceMonitor.relabelings }}
      relabelings:

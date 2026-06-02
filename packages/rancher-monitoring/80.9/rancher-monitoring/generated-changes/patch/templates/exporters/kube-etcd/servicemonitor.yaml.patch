@@ -1,25 +1,28 @@
 --- charts-original/templates/exporters/kube-etcd/servicemonitor.yaml
 +++ charts/templates/exporters/kube-etcd/servicemonitor.yaml
-@@ -58,10 +58,20 @@
+@@ -58,10 +58,23 @@
        {{- end}}
        insecureSkipVerify: {{ .Values.kubeEtcd.serviceMonitor.insecureSkipVerify }}
      {{- end }}
 -{{- if .Values.kubeEtcd.serviceMonitor.metricRelabelings }}
++    {{- $hasExtra := or .Values.global.cattle.clusterId .Values.global.cattle.clusterName }}
++    {{- if or .Values.kubeEtcd.serviceMonitor.metricRelabelings $hasExtra }}
      metricRelabelings:
 -{{ tpl (toYaml .Values.kubeEtcd.serviceMonitor.metricRelabelings | indent 4) . }}
 -{{- end }}
 +    {{- if .Values.kubeEtcd.serviceMonitor.metricRelabelings }}
-+    {{ tpl (toYaml .Values.kubeEtcd.serviceMonitor.metricRelabelings | indent 4) . }}
++    {{- tpl (toYaml .Values.kubeEtcd.serviceMonitor.metricRelabelings | nindent 6) . }}
 +    {{- end }}
-+    {{ if .Values.global.cattle.clusterId }}
++    {{- if .Values.global.cattle.clusterId }}
 +      - sourceLabels: [__address__]
 +        targetLabel: cluster_id
-+        replacement: {{ .Values.global.cattle.clusterId }}
++        replacement: {{ .Values.global.cattle.clusterId | quote }}
 +    {{- end }}
-+    {{ if .Values.global.cattle.clusterName}}
++    {{- if .Values.global.cattle.clusterName }}
 +      - sourceLabels: [__address__]
 +        targetLabel: cluster_name
-+        replacement: {{ .Values.global.cattle.clusterName }}
++        replacement: {{ .Values.global.cattle.clusterName | quote }}
++    {{- end }}
 +    {{- end }}
  {{- if .Values.kubeEtcd.serviceMonitor.relabelings }}
      relabelings:
