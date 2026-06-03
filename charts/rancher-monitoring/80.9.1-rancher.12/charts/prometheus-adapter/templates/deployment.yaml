@@ -53,6 +53,9 @@ spec:
       {{- if .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- include "monitoring-global.imagePullSecrets" . | indent 8 }}
+      {{- else if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- include "monitoring-image.imagePullSecrets" . | indent 8 }}
       {{- end }}
       containers:
       - name: {{ .Chart.Name }}
@@ -137,12 +140,6 @@ spec:
         {{- if .Values.tolerations }}
           {{- toYaml .Values.tolerations | nindent 8 }}
         {{- end }}
-      {{- if .Values.image.pullSecrets }}
-      imagePullSecrets:
-        {{- range .Values.image.pullSecrets }}
-        - name: {{ . }}
-        {{- end }}
-      {{- end }}
       volumes:
       {{- if .Values.extraVolumes  }}
       {{ toYaml .Values.extraVolumes | trim | nindent 6 }}

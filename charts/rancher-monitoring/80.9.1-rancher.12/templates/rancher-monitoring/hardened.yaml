@@ -26,6 +26,10 @@ spec:
       restartPolicy: Never
       nodeSelector: {{ include "linux-node-selector" . | nindent 8 }}
       tolerations: {{ include "linux-node-tolerations" . | nindent 8 }}
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- include "monitoring-global.imagePullSecrets" . | indent 8 }}
+      {{- end }}
       containers:
       {{- range $_, $ns := $namespaces }}
       - name: patch-sa-{{ $ns }}

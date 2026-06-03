@@ -117,3 +117,21 @@ global:
   {{- end }}
 {{- end }}
 {{- end -}}
+
+{{/*
+To help compatibility with image.pullSecrets values that can be either maps or strings.
+image:
+  pullSecrets:
+  - name: pullSecret1
+  - pullSecret2
+*/}}
+{{- define "monitoring-image.imagePullSecrets" -}}
+{{- range .Values.image.pullSecrets }}
+  {{- if eq (typeOf .) "map[string]interface {}" }}
+- {{ toYaml . | trim }}
+  {{- else }}
+- name: {{ . }}
+  {{- end }}
+{{- end }}
+{{- end -}}
+
