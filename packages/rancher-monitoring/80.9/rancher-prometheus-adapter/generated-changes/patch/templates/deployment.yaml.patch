@@ -1,12 +1,15 @@
 --- charts-original/templates/deployment.yaml
 +++ charts/templates/deployment.yaml
-@@ -50,9 +50,13 @@
+@@ -50,9 +50,16 @@
        dnsConfig:
          {{- toYaml . | nindent 8 }}
        {{- end }}
 +      {{- if .Values.global.imagePullSecrets }}
 +      imagePullSecrets:
 +        {{- include "monitoring-global.imagePullSecrets" . | indent 8 }}
++      {{- else if .Values.image.pullSecrets }}
++      imagePullSecrets:
++        {{- include "monitoring-image.imagePullSecrets" . | indent 8 }}
 +      {{- end }}
        containers:
        - name: {{ .Chart.Name }}
@@ -15,7 +18,7 @@
          imagePullPolicy: {{ .Values.image.pullPolicy }}
          {{- with .Values.env }}
          env:
-@@ -114,7 +118,10 @@
+@@ -114,7 +121,10 @@
        {{- toYaml . | nindent 6 }}
        {{- end }}
        nodeSelector:
@@ -27,16 +30,21 @@
        affinity:
          {{- toYaml .Values.affinity | nindent 8 }}
        topologySpreadConstraints:
-@@ -126,8 +133,10 @@
+@@ -126,14 +136,10 @@
        securityContext:
          {{- toYaml .Values.podSecurityContext | nindent 8 }}
        {{- end }}
 -      tolerations:
 -        {{- toYaml .Values.tolerations | nindent 8 }}
+-      {{- if .Values.image.pullSecrets }}
+-      imagePullSecrets:
+-        {{- range .Values.image.pullSecrets }}
+-        - name: {{ . }}
 +      tolerations: {{ include "linux-node-tolerations" . | nindent 8 }}
 +        {{- if .Values.tolerations }}
 +          {{- toYaml .Values.tolerations | nindent 8 }}
-+        {{- end }}
-       {{- if .Values.image.pullSecrets }}
-       imagePullSecrets:
-         {{- range .Values.image.pullSecrets }}
+         {{- end }}
+-      {{- end }}
+       volumes:
+       {{- if .Values.extraVolumes  }}
+       {{ toYaml .Values.extraVolumes | trim | nindent 6 }}
