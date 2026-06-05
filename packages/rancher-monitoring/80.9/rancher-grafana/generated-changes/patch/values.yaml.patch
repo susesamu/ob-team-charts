@@ -66,8 +66,8 @@
 -  registry: docker.io
 -  repository: curlimages/curl
 -  tag: 8.9.1
-+  repository: rancher/appco-curl
-+  tag: 8.14.1-7.1
++  repository: rancher/mirrored-curlimages-curl
++  tag: 8.20.0
    sha: ""
    pullPolicy: IfNotPresent
  
