@@ -12,6 +12,17 @@
  apiVersion: monitoring.coreos.com/v1
  kind: PrometheusRule
  metadata:
+@@ -24,9 +25,9 @@
+ spec:
+   groups:
+   - name: kubernetes-system-controller-manager
+-    rules:
+ {{- if .Values.kubeControllerManager.enabled }}
+ {{- if not (.Values.defaultRules.disabled.KubeControllerManagerDown | default false) }}
++    rules:
+     - alert: KubeControllerManagerDown
+       annotations:
+ {{- if .Values.defaultRules.additionalRuleAnnotations }}
 @@ -39,10 +40,7 @@
          runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/kubecontrollermanagerdown
          summary: Target disappeared from Prometheus target discovery.
