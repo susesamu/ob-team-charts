@@ -18,3 +18,12 @@
  {{- end }}
  ---
  {{- if and .Values.grafana.operator.dashboardsConfigMapRefEnabled (or .Values.grafana.enabled .Values.grafana.forceDeployDashboards) (semverCompare ">=1.14.0-0" $kubeTargetVersion) (semverCompare "<9.9.9-9" $kubeTargetVersion) .Values.grafana.defaultDashboardsEnabled .Values.coreDns.enabled }}
+@@ -38,7 +38,7 @@
+ spec:
+   allowCrossNamespaceImport: true
+   resyncPeriod: {{ .Values.grafana.operator.resyncPeriod | quote | default "10m" }}
+-  folder: {{ .Values.grafana.operator.folder | quote }}
++  {{- include "kube-prometheus-stack.grafana.operator.folder" . | nindent 2 }}
+   instanceSelector:
+     matchLabels:
+     {{- if .Values.grafana.operator.matchLabels }}
