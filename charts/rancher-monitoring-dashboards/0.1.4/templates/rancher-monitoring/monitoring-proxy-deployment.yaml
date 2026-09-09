@@ -72,6 +72,8 @@ spec:
           name: nginx-config
         - mountPath: /var/cache/nginx
           name: nginx-cache
+        - mountPath: /var/lib/nginx
+          name: nginx-lib
         resources:
 {{ toYaml .Values.monitoringProxy.resources | indent 10 }}
         securityContext:
@@ -89,4 +91,6 @@ spec:
             mode: 438
             path: nginx.conf
       - name: nginx-cache
+        emptyDir: {}
+      - name: nginx-lib
         emptyDir: {}
