@@ -32,8 +32,8 @@ for chart_full_version in $NEW_CHARTS; do
   yq e ".packages.$CHART_NAME.\"$UPSTREAM_VERSION\".branches" -o=json "$OB_DIR/charts-config.yaml" \
     | jq -c '.[]' | while read -r branch_config; do
         TARGET_BRANCH=$(echo "$branch_config" | jq -r '.branch')
-        PACKAGE_PATH=$(echo "$branch_config" | jq -r '.package')
-        echo "${chart_full_version},${PACKAGE_PATH}" >> "$BRANCH_DATA_DIR/$TARGET_BRANCH"
+        CHARTS_PACKAGE_DIR=$(echo "$branch_config" | jq -r '.package')
+        echo "${chart_full_version},${CHARTS_PACKAGE_DIR}" >> "$BRANCH_DATA_DIR/$TARGET_BRANCH"
     done
 done
 

@@ -13,11 +13,11 @@ source "$(dirname "$0")/common.sh"
 require_charts_dir
 ensure_branch_file
 
-while IFS=, read -r chart_full_version PACKAGE_PATH; do
-  rm -rf "$CHARTS_DIR/packages/$PACKAGE_PATH/generated-changes/dependencies"
-  make -C "$CHARTS_DIR" prepare PACKAGE="$PACKAGE_PATH" USE_CACHE=true
+while IFS=, read -r chart_full_version CHARTS_PACKAGE_DIR; do
+  rm -rf "$CHARTS_DIR/packages/$CHARTS_PACKAGE_DIR/generated-changes/dependencies"
+  make -C "$CHARTS_DIR" prepare PACKAGE="$CHARTS_PACKAGE_DIR" USE_CACHE=true
   make -C "$CHARTS_DIR" clean
-  summary "  - Prepared dependencies for \`$PACKAGE_PATH\`"
+  summary "  - Prepared dependencies for \`$CHARTS_PACKAGE_DIR\`"
 done < "$BRANCH_FILE"
 
 commit_if_changed "chore(charts): Refresh chart dependencies"

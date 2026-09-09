@@ -19,7 +19,7 @@ if [ ! -f "$VERSIONS_FILE" ]; then
   exit 1
 fi
 
-while IFS=, read -r chart_full_version PACKAGE_PATH; do
+while IFS=, read -r chart_full_version CHARTS_PACKAGE_DIR; do
   CHART_NAME=$(echo "$chart_full_version" | cut -d'/' -f1)
   CHART_VERSION=$(echo "$chart_full_version" | cut -d'/' -f2)
   NEW_PACKAGE_VERSION=$(grep "^${chart_full_version}=" "$VERSIONS_FILE" | cut -d'=' -f2)

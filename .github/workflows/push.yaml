@@ -9,7 +9,9 @@ on:
         type: string
   push:
     branches:
-    - main
+      - main
+    paths:
+      - charts
 
 
 jobs:

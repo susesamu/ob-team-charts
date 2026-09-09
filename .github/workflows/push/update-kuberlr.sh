@@ -36,11 +36,11 @@ fi
 
 summary "  - Found latest kuberlr-kubectl tag for \`$KUBERLR_BRANCH\`: \`$KUBERLR_TAG\`"
 
-while IFS=, read -r chart_full_version PACKAGE_PATH; do
-  make -C "$CHARTS_DIR" prepare PACKAGE="$PACKAGE_PATH" USE_CACHE=true
+while IFS=, read -r chart_full_version CHARTS_PACKAGE_DIR; do
+  make -C "$CHARTS_DIR" prepare PACKAGE="$CHARTS_PACKAGE_DIR" USE_CACHE=true
 
   for chart_subdir in charts charts-crd; do
-    find "$CHARTS_DIR/packages/$PACKAGE_PATH/$chart_subdir" -name "values.yaml" 2>/dev/null \
+    find "$CHARTS_DIR/packages/$CHARTS_PACKAGE_DIR/$chart_subdir" -name "values.yaml" 2>/dev/null \
       | while read -r yaml_file; do
           if grep -q "rancher/kuberlr-kubectl" "$yaml_file"; then
             awk -v tag="$KUBERLR_TAG" '
@@ -53,9 +53,9 @@ while IFS=, read -r chart_full_version PACKAGE_PATH; do
         done
   done
 
-  make -C "$CHARTS_DIR" patch PACKAGE="$PACKAGE_PATH" USE_CACHE=true
+  make -C "$CHARTS_DIR" patch PACKAGE="$CHARTS_PACKAGE_DIR" USE_CACHE=true
   make -C "$CHARTS_DIR" clean
-  summary "  - Regenerated patches for \`$PACKAGE_PATH\`"
+  summary "  - Regenerated patches for \`$CHARTS_PACKAGE_DIR\`"
 done < "$BRANCH_FILE"
 
 commit_if_changed "feat(charts): Update \`kuberlr-kubectl\` tags"

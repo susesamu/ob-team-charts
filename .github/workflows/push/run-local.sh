@@ -91,6 +91,9 @@ for branch_file in "$BRANCH_DATA_DIR"/*; do
   echo "--- Updating package.yaml files ---"
   bash "$SCRIPT_DIR/update-package-yaml.sh" || { echo "No package.yaml changes, skipping branch."; continue; }
 
+  echo "--- Correct kuberlr patch versions ---"
+  bash "$SCRIPT_DIR/correct-kuberlr-patch.sh"
+
   echo "--- Preparing chart dependencies ---"
   bash "$SCRIPT_DIR/prepare-deps.sh"
 

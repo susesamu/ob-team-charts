@@ -24,10 +24,10 @@ CHART_NAMES=$(cut -d',' -f1 "$BRANCH_FILE" | cut -d'/' -f1 | sort -u | tr '\n' '
 > "${BRANCH_FILE}.versions"
 > "${BRANCH_FILE}.rc_removals"
 
-while IFS=, read -r chart_full_version PACKAGE_PATH; do
+while IFS=, read -r chart_full_version CHARTS_PACKAGE_DIR; do
   CHART_NAME=$(echo "$chart_full_version" | cut -d'/' -f1)
   CHART_VERSION=$(echo "$chart_full_version" | cut -d'/' -f2)
-  PACKAGE_YAML_PATH="$CHARTS_DIR/packages/$PACKAGE_PATH/package.yaml"
+  PACKAGE_YAML_PATH="$CHARTS_DIR/packages/$CHARTS_PACKAGE_DIR/package.yaml"
 
   if [ ! -f "$PACKAGE_YAML_PATH" ]; then
     echo "WARNING: package.yaml not found at $PACKAGE_YAML_PATH" >&2
@@ -48,7 +48,7 @@ while IFS=, read -r chart_full_version PACKAGE_PATH; do
 
   yq e -i ".version = \"$NEW_VERSION\"" "$PACKAGE_YAML_PATH"
   echo "${chart_full_version}=${NEW_VERSION}" >> "${BRANCH_FILE}.versions"
-  summary "  - Updated \`$PACKAGE_PATH\` to version \`$NEW_VERSION\`"
+  summary "  - Updated \`$CHARTS_PACKAGE_DIR\` to version \`$NEW_VERSION\`"
 
   if [ "$IS_RC_BUMP" = "true" ]; then
     echo "${CHART_NAME},${CURRENT_VERSION}" >> "${BRANCH_FILE}.rc_removals"
