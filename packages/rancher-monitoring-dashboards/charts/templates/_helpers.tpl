@@ -84,6 +84,16 @@ app: {{ include "rancher-monitoring.name" . }}-dashboards
 {{- end -}}
 {{- end -}}
 
+{{- define "monitoring-dashboards.imagePullSecrets" -}}
+{{- range .Values.global.imagePullSecrets }}
+  {{- if eq (typeOf .) "map[string]interface {}" }}
+- {{ toYaml . | trim }}
+  {{- else }}
+- name: {{ . }}
+  {{- end }}
+{{- end }}
+{{- end -}}
+
 {{- define "rancher.serviceMonitor.selector" -}}
 {{- if .Values.rancherMonitoring.selector }}
 {{ .Values.rancherMonitoring.selector | toYaml }}

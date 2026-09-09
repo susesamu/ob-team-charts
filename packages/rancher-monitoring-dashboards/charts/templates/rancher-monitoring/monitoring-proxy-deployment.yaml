@@ -32,6 +32,10 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
       {{- end }}
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- include "monitoring-dashboards.imagePullSecrets" . | indent 8 }}
+      {{- end }}
       securityContext:
         runAsUser: 101
         runAsGroup: 101

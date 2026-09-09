@@ -4,6 +4,7 @@ commonLabels: {}
 extraManifests: []
 
 global:
+  imagePullSecrets: []
   disableProxyIPv6: false
   # Must match the cluster's actual DNS domain.
   # RKE2 clusters with rke2-coredns don't use cluster.local by default if you have a cluster domain set.
