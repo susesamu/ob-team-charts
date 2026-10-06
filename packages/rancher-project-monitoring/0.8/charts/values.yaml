@@ -81,6 +81,13 @@ global:
      securityContext:
        runAsNonRoot: true
        runAsUser: 1000
+     containerSecurityContext:
+       allowPrivilegeEscalation: false
+       capabilities:
+         drop:
+           - ALL
+       seccompProfile:
+         type: RuntimeDefault
   networkPolicy:
     # If activated, creates ingress network policies to only allow ingress traffic from workloads within the project.
     # This only works correctly, if Project Network Isolation is activated for the cluster in Rancher. Otherwise,
